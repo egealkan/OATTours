@@ -1,0 +1,32 @@
+.admin-navbar {
+    background-color: var(--charcoal);
+    color: var(--pamukkale-white);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .admin-navbar-brand {
+    margin: 0;
+    color: var(--anatolian-sun);
+  }
+  
+  .admin-logout-btn {
+    background-color: var(--terracotta);
+    color: var(--pamukkale-white);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity 0.2s;
+  }
+  
+  .admin-logout-btn:hover {
+    opacity: 0.8;
+  }
+  
+  .admin-main-content {
+    padding: 2rem;
+  }
