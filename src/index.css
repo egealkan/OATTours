@@ -1,21 +1,18 @@
 :root {
-  /* OAT Turkey Tour Palette */
-  --aegean-blue: #0080a8;
-  --terracotta: #FF6663;
-  --anatolian-sun: #FFD52E;
-  --pamukkale-white: #FFFFFF;
-  --charcoal: #333333;
-  --bg-light: #f4f7f6;
+  --color-aegean-blue: #0080a8;
+  --color-terracotta: #FF6663;
+  --color-anatolian-sun: #FFD52E;
+  --color-pamukkale-white: #FFFFFF;
+  --color-dark-slate: #333333;
 }
 
 body {
-  margin: 0;
+  background-color: #f7f9fc; /* A very soft grey/blue to make the white cards pop */
+  color: var(--color-dark-slate);
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--bg-light);
-  color: var(--charcoal);
-  /* Smooth scrolling for anchor links */
-  scroll-behavior: smooth; 
+  margin: 0;
 }
+
 
 /* A simple utility class for our lazy-load fallback */
 .loading-spinner {
@@ -24,3 +21,16 @@ body {
   font-size: 1.2rem;
   color: var(--aegean-blue);
 }
+
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout-content {
+  flex: 1;
+  padding: 2rem;
+  padding-top: 100px; /* <-- ADD THIS: Pushes the page content down below the fixed navbar */
+}
+

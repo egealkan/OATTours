@@ -1,0 +1,1 @@
+export default function GuestProtectedRoute() { return <div>Guest Protected Route</div>; }

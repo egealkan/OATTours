@@ -1,26 +1,28 @@
-import { Outlet } from 'react-router-dom';
+import React from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import GuestNavbar from './GuestNavbar';
+import SharedFooter from './SharedFooter';
+import '../../index.css';
 
 const GuestLayout = () => {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      
-      {/* Global Header */}
-      <header style={{ backgroundColor: 'var(--aegean-blue)', color: 'var(--pamukkale-white)', padding: '1rem 2rem' }}>
-        <h2 style={{ margin: 0 }}>OAT Turkey Tours</h2>
-      </header>
+    // Check if the user has successfully entered the PIN
+    const isAuthenticated = sessionStorage.getItem('guestAuthenticated') === 'true';
 
-      {/* Dynamic Page Content Injector */}
-      <main style={{ flex: 1, padding: '2rem' }}>
-        <Outlet /> 
-      </main>
+    // THE GUARD: If not authenticated, bounce them to the login page
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
+    }
 
-      {/* Global Footer */}
-      <footer style={{ backgroundColor: 'var(--charcoal)', color: 'var(--pamukkale-white)', padding: '1rem 2rem', textAlign: 'center' }}>
-        <p style={{ margin: 0 }}>© 2026 Your Name - Tour Guide</p>
-      </footer>
-
-    </div>
-  );
+    // THE LAYOUT: If authenticated, show the navbar, content, and footer
+    return (
+        <div className="layout-wrapper">
+            <GuestNavbar />
+            <main className="layout-content">
+                <Outlet />
+            </main>
+            <SharedFooter role="guest" />
+        </div>
+    );
 };
 
 export default GuestLayout;
