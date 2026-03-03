@@ -7,7 +7,7 @@
 }
 
 body {
-  background-color: #f7f9fc; /* A very soft grey/blue to make the white cards pop */
+  background-color: #f8f8ee; /* A very soft grey/blue to make the white cards pop */
   color: var(--color-dark-slate);
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   margin: 0;

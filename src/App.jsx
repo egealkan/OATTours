@@ -11,6 +11,9 @@ import ScrollToTop from './components/presentational/ScrollToTop';
 import GuestLayout from './components/presentational/GuestLayout';
 import AdminLayout from './components/presentational/AdminLayout'; // This will protect your admin routes
 
+//Extras
+import AnimatedBackground from './components/extras/AnimatedBackground';
+
 // --- LAZY LOADED PAGES ---
 // Guest Pages
 const GuestLogin = React.lazy(() => import('./pages/guest/GuestLogin'));
@@ -35,6 +38,7 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <AnimatedBackground />
       <Toaster />    
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
