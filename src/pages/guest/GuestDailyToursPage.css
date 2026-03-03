@@ -1,0 +1,412 @@
+/* --- BASE LAYOUT --- */
+.guest-page-wrapper {
+    padding: 20px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    animation: fadeIn 0.4s ease-in-out;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: var(--color-dark-slate);
+}
+
+.guest-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 0 10px;
+}
+
+.guest-header h1 {
+    color: var(--color-aegean-blue);
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    margin-bottom: 10px;
+}
+
+.guest-header p {
+    color: var(--color-dark-slate);
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+    opacity: 0.9;
+}
+
+/* --- MAIN GRID VIEW (DAY CARDS) --- */
+.itinerary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.itinerary-card {
+    background-color: var(--color-pamukkale-white);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 2px solid transparent;
+}
+
+.itinerary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 128, 168, 0.15);
+    border-color: rgba(0, 128, 168, 0.3);
+}
+
+/* --- CURRENT DAY INDICATORS --- */
+.itinerary-card-today {
+    border: 2px solid var(--color-anatolian-sun);
+    background-color: #fffef7;
+    box-shadow: 0 6px 16px rgba(255, 213, 46, 0.2);
+}
+
+.itinerary-card-today:hover {
+    border-color: var(--color-terracotta);
+    box-shadow: 0 10px 20px rgba(255, 102, 99, 0.2);
+}
+
+.card-day-badge {
+    background-color: var(--color-aegean-blue);
+    color: var(--color-pamukkale-white);
+    padding: 10px 15px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.badge-today {
+    background-color: var(--color-anatolian-sun);
+    color: var(--color-dark-slate);
+}
+
+.badge-today-text {
+    font-size: 0.85rem;
+    background-color: var(--color-terracotta);
+    color: var(--color-pamukkale-white);
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.card-date {
+    margin: 0 0 10px 0;
+    font-size: 1.3rem;
+    color: var(--color-dark-slate);
+}
+
+.card-city {
+    margin: 0 0 15px 0;
+    color: #666;
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+.card-action {
+    margin-top: auto;
+    color: var(--color-terracotta);
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* --- DETAIL VIEW HEADER & BACK BUTTON --- */
+.btn-back {
+    background-color: var(--color-terracotta);
+    color: var(--white);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 25px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-back:hover {
+    background-color: var(--color-aegean-blue);
+    color: var(--color-pamukkale-white);
+}
+
+.day-detail-header {
+    background-color: var(--color-aegean-blue);
+    color: var(--color-pamukkale-white);
+    padding: clamp(20px, 5vw, 30px);
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    position: relative;
+}
+
+.today-header-badge {
+    display: inline-block;
+    background-color: var(--color-anatolian-sun);
+    color: var(--color-dark-slate);
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.day-detail-header h1 {
+    margin: 0 0 5px 0;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    color: var(--color-anatolian-sun);
+}
+
+.day-detail-date {
+    margin: 0 0 20px 0;
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+    opacity: 0.9;
+}
+
+/* --- RESPONSIVE LIVE WEATHER WIDGET --- */
+.weather-widget {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.weather-city {
+    font-weight: 600;
+    font-size: clamp(1rem, 3vw, 1.1rem);
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+.weather-data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap; /* Prevents overflow on tiny screens */
+    gap: 15px;
+}
+
+.weather-emoji {
+    font-size: clamp(2rem, 6vw, 2.8rem);
+    line-height: 1;
+}
+
+.weather-info-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.weather-temp {
+    font-size: clamp(1.8rem, 5vw, 2.2rem);
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.weather-desc {
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.weather-status {
+    font-size: 0.95rem;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* --- SHARED INFO CARDS --- */
+.info-card {
+    background-color: var(--color-pamukkale-white);
+    border-radius: 12px;
+    padding: clamp(20px, 5vw, 35px);
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    border-left: 6px solid var(--color-terracotta);
+    box-sizing: border-box;
+}
+
+.info-card h2 {
+    color: var(--color-aegean-blue);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: clamp(1.4rem, 4vw, 1.8rem);
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 12px;
+}
+
+/* --- SEPARATED SCHEDULE CATEGORIES --- */
+.schedule-category {
+    margin-bottom: 20px;
+}
+
+.category-title {
+    color: var(--color-dark-slate);
+    font-size: 1.15rem;
+    margin-bottom: 15px;
+    margin-top: 0;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.schedule-divider {
+    height: 1px;
+    background-color: #f0f0f0;
+    margin: 25px 0;
+}
+
+.schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.schedule-item {
+    background-color: #fcfcfc;
+    border: 1px solid #eaeaea;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.schedule-item .time {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--color-aegean-blue);
+}
+
+.schedule-item .highlight-time {
+    color: var(--color-terracotta);
+}
+
+.schedule-item .event {
+    font-size: 1.05rem;
+    color: var(--color-dark-slate);
+    font-weight: 500;
+}
+
+/* --- PLACES GRID --- */
+.places-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.place-card {
+    background-color: #fcfcfc;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.place-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.06);
+}
+
+.place-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.place-image-placeholder {
+    width: 100%;
+    height: 160px;
+    background-color: var(--color-aegean-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+.place-name {
+    margin: 0;
+    padding: 15px;
+    font-size: 1.1rem;
+    color: var(--color-dark-slate);
+    text-align: center;
+}
+
+/* --- MEALS & ACCOMMODATION --- */
+.logistics-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background-color: #f9fbfd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.logistics-icon {
+    font-size: 1.8rem;
+}
+
+.logistics-row strong {
+    color: var(--color-aegean-blue);
+    margin-right: 5px;
+}
+
+.empty-text {
+    color: #888;
+    font-style: italic;
+    font-size: 1rem;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.error-message {
+    text-align: center;
+    padding: 50px;
+    font-size: 1.2rem;
+    color: var(--color-terracotta);
+    font-weight: bold;
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.2rem;
+    color: var(--color-aegean-blue);
+    font-weight: bold;
+}

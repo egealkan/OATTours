@@ -17,7 +17,11 @@ import AnimatedBackground from './components/extras/AnimatedBackground';
 // --- LAZY LOADED PAGES ---
 // Guest Pages
 const GuestLogin = React.lazy(() => import('./pages/guest/GuestLogin'));
+const GuestDashboard = React.lazy(() => import('./pages/guest/GuestDashboard'));
 const GuestWelcomePage = React.lazy(() => import('./pages/guest/GuestWelcomePage'));
+const GuestWelcomeMeetingPage = React.lazy(() => import('./pages/guest/GuestWelcomeMeetingPage'));
+const GuestDailyToursPage = React.lazy(() => import('./pages/guest/GuestDailyToursPage'));
+const GuestFarewellPage = React.lazy(() => import('./pages/guest/GuestFarewellPage'));
 const DailyInfoPage = React.lazy(() => import('./pages/guest/DailyInfoPage'));
 
 // Admin Pages
@@ -43,14 +47,22 @@ function App() {
       <Toaster />    
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
+
+
           {/* ----------------- GUEST ROUTES ----------------- */}
           {/* Guest Public Route (Login) */}
           <Route path="/login" element={<GuestLogin />} />
           {/* Guest Protected Routes (Everything inside GuestLayout) */}
           <Route path="/" element={<GuestLayout />}>
-            <Route index element={<GuestWelcomePage />} />
+            <Route index element={<GuestDashboard />} />
+            <Route path="welcome-email" element={<GuestWelcomePage />} />
+            <Route path="welcome-meeting" element={<GuestWelcomeMeetingPage />} />
+            <Route path="daily-info" element={<GuestDailyToursPage />} />
+            <Route path="farewell" element={<GuestFarewellPage />} />
             <Route path="day/:dayNumber" element={<DailyInfoPage />} />
           </Route>
+
+
           {/* ----------------- ADMIN ROUTES ----------------- */}
           {/* Public Admin Route */}
           <Route path="/admin/login" element={<AdminLogin />} />

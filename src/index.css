@@ -4,10 +4,11 @@
   --color-anatolian-sun: #FFD52E;
   --color-pamukkale-white: #FFFFFF;
   --color-dark-slate: #333333;
+  --white: #ffffff;
 }
 
 body {
-  background-color: #f8f8ee; /* A very soft grey/blue to make the white cards pop */
+  background-color: #fbfbe1; /* A very soft grey/blue to make the white cards pop */
   color: var(--color-dark-slate);
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   margin: 0;

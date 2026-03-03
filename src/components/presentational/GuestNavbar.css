@@ -9,6 +9,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     display: flex;
     align-items: center;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 .guest-navbar .navbar-container {
@@ -28,11 +29,25 @@
     width: auto;
 }
 
-.guest-navbar .navbar-logo {
+/* Updated Logo Container Styles */
+.navbar-logo-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 12px;
+}
+
+.navbar-logo-img {
+    height: 40px; 
+    width: auto;
+    border-radius: 5px; /* Adjust if your logo is a circle */
+    object-fit: contain;
+}
+
+.guest-navbar .navbar-logo-text {
     color: var(--color-pamukkale-white);
     font-size: 1.5rem;
     font-weight: bold;
-    text-decoration: none;
     white-space: nowrap;
 }
 
@@ -61,8 +76,8 @@
 .guest-navbar .nav-link {
     color: var(--color-pamukkale-white);
     text-decoration: none;
-    font-weight: 500;
-    font-size: 1rem;
+    font-weight: 600;
+    font-size: 1.05rem;
     padding: 0.5rem 0;
     border-bottom: 3px solid transparent;
     transition: all 0.2s ease-in-out;
@@ -91,6 +106,10 @@
         width: 100%;
         padding: 0 2rem;
         height: 70px;
+    }
+    
+    .guest-navbar .navbar-logo-text {
+        font-size: 1.25rem; /* Slightly smaller text on mobile to fit the logo */
     }
 
     .mobile-menu-toggle {

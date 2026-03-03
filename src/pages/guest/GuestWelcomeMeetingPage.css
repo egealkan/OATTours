@@ -1,0 +1,364 @@
+/* --- BASE LAYOUT --- */
+.guest-page-wrapper {
+    padding: 20px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    animation: fadeIn 0.5s ease-in-out;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.guest-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 0 10px;
+}
+
+.guest-header h1 {
+    color: var(--color-aegean-blue);
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    margin-bottom: 10px;
+}
+
+.guest-header p {
+    color: var(--color-dark-slate);
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+    opacity: 0.9;
+}
+
+/* --- INFO CARDS --- */
+.info-card {
+    background-color: var(--color-pamukkale-white);
+    border-radius: 12px;
+    padding: clamp(20px, 5vw, 35px);
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    border-left: 6px solid var(--color-terracotta);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.center-card {
+    text-align: center;
+}
+
+.info-card h2 {
+    color: var(--color-aegean-blue);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: clamp(1.4rem, 4vw, 1.8rem);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 12px;
+}
+
+.center-card h2 {
+    justify-content: center;
+}
+
+.card-summary-text {
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
+}
+
+/* --- GUIDE ABOUT ME SECTION --- */
+.guide-content-flex {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.guide-avatar, .guide-avatar-placeholder {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border: 3px solid var(--color-anatolian-sun);
+}
+
+.guide-avatar-placeholder {
+    background-color: var(--color-aegean-blue);
+    color: var(--color-pamukkale-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.8rem;
+    font-weight: bold;
+}
+
+.guide-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0; 
+}
+
+.guide-details h3 {
+    margin: 0;
+    font-size: clamp(1.4rem, 3vw, 1.6rem);
+    color: var(--color-dark-slate);
+}
+
+.guide-badge {
+    background-color: #f1f5f9;
+    color: var(--color-aegean-blue);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    align-self: flex-start;
+}
+
+.about-me-text {
+    line-height: 1.6;
+    color: #444;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
+}
+
+/* --- GRIDS & DATA SECTIONS --- */
+.data-section h3 {
+    color: var(--color-aegean-blue);
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+
+.data-row {
+    margin: 5px 0;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: var(--color-dark-slate);
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.grid-item {
+    background-color: #fcfcfc;
+    padding: 18px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 1px solid #eaeaea;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.grid-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.06);
+    border-color: var(--color-anatolian-sun);
+}
+
+/* --- HOTEL SPECIFIC STYLES --- */
+.hotel-card {
+    padding: 15px;
+}
+
+.hotel-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.center-content {
+    align-items: center;
+    text-align: center;
+}
+
+.item-title {
+    font-weight: 700;
+    color: var(--color-dark-slate);
+    font-size: 1.15rem;
+}
+
+.item-subtext {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.item-highlight-date {
+    color: var(--color-terracotta);
+    font-weight: 800;
+    font-size: 1.2rem;
+    margin-top: 8px;
+}
+
+.item-highlight-time {
+    color: var(--color-aegean-blue);
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+/* --- HIGHLIGHT BOXES (GULET) --- */
+.highlight-box {
+    background-color: #f9fbfd;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px auto;
+    max-width: 400px;
+    border: 1px solid rgba(0, 128, 168, 0.2);
+}
+
+.highlight-title {
+    margin: 0 0 5px 0;
+    color: var(--color-aegean-blue);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.highlight-value {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-dark-slate);
+}
+
+/* --- BUTTONS & MODALS --- */
+.btn-open-modal {
+    background-color: var(--color-terracotta);
+    color: var(--color-pamukkale-white);
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto; /* Centers the button */
+    display: block; /* Ensures margin auto works */
+}
+
+.btn-open-modal:hover {
+    background-color: #e55a57;
+    transform: translateY(-2px);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-container {
+    background-color: var(--color-pamukkale-white);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 650px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: slideUp 0.3s ease-out;
+}
+
+.modal-large {
+    max-width: 800px; /* Allows the hotel grid more space inside the modal */
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--color-aegean-blue);
+    border: none;
+    padding: 0;
+}
+
+.btn-close-modal {
+    background: none;
+    border: none;
+    font-size: 2.2rem;
+    color: #888;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.btn-close-modal:hover {
+    color: var(--color-terracotta);
+}
+
+.modal-body {
+    padding: 25px;
+    overflow-y: auto;
+}
+
+.modal-text {
+    line-height: 1.7;
+    color: var(--color-dark-slate);
+    white-space: pre-wrap;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.empty-text {
+    color: #888;
+    font-style: italic;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* --- ANIMATIONS & MEDIA QUERIES --- */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media screen and (max-width: 600px) {
+    .guide-content-flex {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .guide-badge {
+        align-self: center;
+    }
+    
+    .btn-open-modal {
+        max-width: none; 
+    }
+}
