@@ -1,1 +1,0 @@
-export default function DailyInfoPage() { return <div>Daily Info</div>; }

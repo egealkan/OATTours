@@ -22,7 +22,6 @@ const GuestWelcomePage = React.lazy(() => import('./pages/guest/GuestWelcomePage
 const GuestWelcomeMeetingPage = React.lazy(() => import('./pages/guest/GuestWelcomeMeetingPage'));
 const GuestDailyToursPage = React.lazy(() => import('./pages/guest/GuestDailyToursPage'));
 const GuestFarewellPage = React.lazy(() => import('./pages/guest/GuestFarewellPage'));
-const DailyInfoPage = React.lazy(() => import('./pages/guest/DailyInfoPage'));
 
 // Admin Pages
 const AdminLogin = React.lazy(() => import('./pages/admin/AdminLogin'));
@@ -59,7 +58,6 @@ function App() {
             <Route path="welcome-meeting" element={<GuestWelcomeMeetingPage />} />
             <Route path="daily-info" element={<GuestDailyToursPage />} />
             <Route path="farewell" element={<GuestFarewellPage />} />
-            <Route path="day/:dayNumber" element={<DailyInfoPage />} />
           </Route>
 
 
