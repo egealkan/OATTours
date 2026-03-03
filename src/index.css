@@ -29,7 +29,7 @@ body {
 }
 
 .layout-content {
-  flex: 1;
+  flex-grow: 1;
   padding: 2rem;
   padding-top: 100px; /* <-- ADD THIS: Pushes the page content down below the fixed navbar */
 }

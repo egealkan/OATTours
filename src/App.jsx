@@ -25,7 +25,8 @@ const AdminLogin = React.lazy(() => import('./pages/admin/AdminLogin'));
 const AdminDashboard = React.lazy(() => import('./pages/admin/AdminDashboard'));
 const AdminWelcomeEmailEdit = React.lazy(() => import('./pages/admin/AdminWelcomeEmailEdit'));
 const AdminWelcomeMeetingEdit = React.lazy(() => import('./pages/admin/AdminWelcomeMeetingEdit'));
-const AdminTourEdit = React.lazy(() => import('./pages/admin/AdminTourEdit'));
+const AdminDailyInfoEdit = React.lazy(() => import('./pages/admin/AdminDailyInfoEdit'));
+const AdminFarewellEdit = React.lazy(() => import('./pages/admin/AdminFarewellEdit'));
 
 // Fallback UI
 const LoadingFallback = () => (
@@ -58,7 +59,8 @@ function App() {
             <Route index element={<AdminDashboard />} />
             <Route path="edit-welcome-email" element={<AdminWelcomeEmailEdit />} />
             <Route path="edit-welcome-meeting" element={<AdminWelcomeMeetingEdit />} />
-            <Route path="edit/:tourId" element={<AdminTourEdit />} />
+            <Route path="edit-daily-info" element={<AdminDailyInfoEdit />} />
+            <Route path="edit-farewell" element={<AdminFarewellEdit />} />
           </Route>
         </Routes>
       </Suspense>

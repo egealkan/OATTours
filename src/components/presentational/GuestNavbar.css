@@ -1,15 +1,31 @@
 .guest-navbar {
     background-color: var(--color-aegean-blue);
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
 }
 
 .guest-navbar .navbar-container {
     max-width: 1200px;
     margin: 0 auto;
+    width: 100%;
+    padding: 0 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.navbar-brand {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
 }
 
 .guest-navbar .navbar-logo {
@@ -17,16 +33,106 @@
     font-size: 1.5rem;
     font-weight: bold;
     text-decoration: none;
+    white-space: nowrap;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--color-pamukkale-white);
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0;
+}
+
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: flex-end;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 1.5rem;
 }
 
 .guest-navbar .nav-link {
     color: var(--color-pamukkale-white);
     text-decoration: none;
-    margin-left: 1.5rem;
     font-weight: 500;
-    transition: color 0.3s ease;
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease-in-out;
+    opacity: 0.8;
 }
 
 .guest-navbar .nav-link:hover {
-    color: var(--color-anatolian-sun);
+    opacity: 1;
+}
+
+.guest-navbar .nav-link.active {
+    opacity: 1;
+    border-bottom: 3px solid var(--color-anatolian-sun);
+    color: var(--color-pamukkale-white);
+}
+
+/* --- MOBILE RESPONSIVE DESIGN --- */
+@media (max-width: 768px) {
+    .guest-navbar .navbar-container {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0;
+    }
+
+    .navbar-brand {
+        width: 100%;
+        padding: 0 2rem;
+        height: 70px;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .navbar-menu {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: var(--color-aegean-blue);
+        flex-direction: column;
+        align-items: stretch;
+        
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+    }
+
+    .navbar-menu.open {
+        max-height: 400px;
+    }
+
+    .navbar-links {
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+    }
+
+    .guest-navbar .nav-link {
+        padding: 1.2rem 2rem;
+        width: 100%;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        opacity: 1;
+    }
+
+    .guest-navbar .nav-link.active {
+        background-color: rgba(255, 213, 46, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-left: 4px solid var(--color-anatolian-sun);
+    }
 }

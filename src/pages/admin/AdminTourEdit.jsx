@@ -1,1 +1,0 @@
-export default function AdminTourEdit() { return <div>Edit Tour</div>; }

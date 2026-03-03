@@ -1,21 +1,31 @@
 .admin-navbar {
   background-color: var(--color-aegean-blue);
-  padding: 1rem 2rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  position: fixed; /* <-- CHANGED THIS */
+  position: fixed;
   top: 0;
-  left: 0; /* <-- ADDED THIS */
-  z-index: 1000;
+  left: 0;
   width: 100%;
+  height: 70px; /* Fixed height! */
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
 }
 
 .admin-navbar .navbar-container {
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
+  padding: 0 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 2rem;
+}
+
+.navbar-brand {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
 }
 
 .navbar-title {
@@ -28,22 +38,38 @@
   white-space: nowrap;
 }
 
-/* Container for the links */
+/* Hide the hamburger button on desktop */
+.mobile-menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--color-pamukkale-white);
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Container for links and logout */
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
 .navbar-links {
   display: flex;
   gap: 1.5rem;
-  flex-grow: 1; 
-  justify-content: center; 
 }
 
-/* Default Link State */
 .nav-link {
   color: var(--color-pamukkale-white);
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
   padding: 0.5rem 0;
-  border-bottom: 3px solid transparent; /* Invisible border so it doesn't jump when active */
+  border-bottom: 3px solid transparent;
   transition: all 0.2s ease-in-out;
   opacity: 0.8;
 }
@@ -52,7 +78,6 @@
   opacity: 1;
 }
 
-/* ACTIVE Link State - The Yellow Bar */
 .nav-link.active {
   opacity: 1;
   border-bottom: 3px solid var(--color-anatolian-sun);
@@ -69,7 +94,6 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   white-space: nowrap;
 }
 
@@ -78,17 +102,67 @@
   transform: translateY(-2px);
 }
 
-.logout-button:active {
-  transform: translateY(0);
-}
-
-/* Keep it looking good on iPads/tablets */
+/* --- MOBILE RESPONSIVE DESIGN --- */
 @media (max-width: 900px) {
   .admin-navbar .navbar-container {
       flex-direction: column;
-      gap: 1rem;
+      align-items: flex-start;
+      padding: 0;
   }
+
+  .navbar-brand {
+      width: 100%;
+      padding: 0 2rem;
+      height: 70px;
+  }
+
+  .mobile-menu-toggle {
+      display: block; /* Show hamburger */
+  }
+
+  .navbar-menu {
+      position: absolute;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      background-color: var(--color-aegean-blue);
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      
+      /* Smooth dropdown animation trick */
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-in-out;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+  }
+
+  .navbar-menu.open {
+      max-height: 500px; /* Big enough to fit all links */
+  }
+
   .navbar-links {
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+  }
+
+  .nav-link {
+      padding: 1rem 2rem;
+      width: 100%;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      opacity: 1;
+  }
+
+  .nav-link.active {
+      background-color: rgba(255, 213, 46, 0.1); /* Light yellow tint */
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-left: 4px solid var(--color-anatolian-sun);
+  }
+
+  .logout-button {
+      margin: 1.5rem 2rem;
+      text-align: center;
   }
 }
