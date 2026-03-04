@@ -1,3 +1,16 @@
+/* -------------------------------------------------------------------------
+   CRITICAL LAYOUT FIX: Forces Apple Devices to obey grid calculations 
+   and stops text boxes from expanding past their columns.
+------------------------------------------------------------------------- */
+.admin-edit-wrapper *, 
+.modal-overlay *, 
+.admin-edit-wrapper *::before, 
+.admin-edit-wrapper *::after {
+    box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------------------- */
+
 .admin-edit-wrapper {
     max-width: 900px;
     margin: 0 auto;
@@ -250,16 +263,59 @@
 /* --- INPUT STYLES --- */
 .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 label { color: var(--color-dark-slate); font-weight: 600; font-size: 14px; margin-bottom: 8px; display: block; opacity: 0.9; }
+
 input[type="text"], input[type="time"], input[type="date"], select {
-    width: 100%; padding: 14px 16px; border: 1px solid #d1d5db; border-radius: 10px;
-    font-size: 16px; color: var(--color-dark-slate); background-color: #f9fafb; outline: none; transition: all 0.2s;
+    width: 100%; 
+    padding: 14px 16px; 
+    border: 1px solid #d1d5db; 
+    border-radius: 10px;
+    font-size: 16px; 
+    color: var(--color-dark-slate); 
+    background-color: #f9fafb; 
+    outline: none; 
+    transition: all 0.2s;
+    /* Forces Apple to obey sizes */
+    min-width: 0; 
 }
+
 input:focus, select:focus { border-color: var(--color-aegean-blue); box-shadow: 0 0 0 3px rgba(0, 128, 168, 0.15); background-color: var(--color-pamukkale-white); }
 select { appearance: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%230080a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>'); background-repeat: no-repeat; background-position: right 12px center; background-size: 16px; }
 
-@media (max-width: 1024px) {
-    .input-row, .traveler-row, .place-edit-row { grid-template-columns: 1fr; }
-    .traveler-header-row { display: none; }
-    .traveler-row { display: flex; flex-direction: column; }
-    .btn-remove-small { width: 100%; padding: 12px; }
+/* -------------------------------------------------------------------------
+   MEDIA QUERY ADJUSTED TO 1100px TO SAFELY CATCH ALL IPAD ORIENTATIONS 
+------------------------------------------------------------------------- */
+@media (max-width: 1100px) {
+    .input-row { 
+        grid-template-columns: 1fr; 
+    }
+    
+    .traveler-header-row { 
+        display: none; 
+    }
+    
+    .traveler-row { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 12px; 
+        padding: 15px; 
+    }
+    
+    .place-edit-row { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 12px; 
+        background-color: #f8fafc; 
+        padding: 15px; 
+        border-radius: 8px; 
+        border: 1px solid #eaeaea; 
+    }
+    
+    .btn-remove-small { 
+        width: 100%; 
+        padding: 14px; 
+    }
+    
+    .modal-content { 
+        width: 95%; 
+    }
 }
