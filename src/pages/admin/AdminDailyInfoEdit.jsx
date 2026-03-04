@@ -500,12 +500,18 @@ const AdminDailyInfoEdit = () => {
             let currentDayId = editingDay.id;
 
             const dayPayload = {
-                tour_id: activeTourId, date: editingDay.date, weather_city_name: editingDay.weather_city_name,
-                route_map_embed_url: editingDay.route_map_embed_url, wake_up_time: editingDay.wake_up_time,
-                breakfast_time: editingDay.breakfast_time, suitcase_pickup_time: editingDay.suitcase_pickup_time,
-                departure_time: editingDay.departure_time, hotel_arrival_time: editingDay.hotel_arrival_time,
-                dinner_time: editingDay.dinner_time, free_time_start: editingDay.free_time_start,
-                hotel_id: editingDay.hotel_id || null, lunch_restaurant_id: editingDay.lunch_restaurant_id || null,
+                tour_id: activeTourId, date: editingDay.date || null,
+                weather_city_name: editingDay.weather_city_name || null,
+                route_map_embed_url: editingDay.route_map_embed_url || null,
+                wake_up_time: editingDay.wake_up_time || null,
+                breakfast_time: editingDay.breakfast_time || null,
+                suitcase_pickup_time: editingDay.suitcase_pickup_time || null,
+                departure_time: editingDay.departure_time || null,
+                hotel_arrival_time: editingDay.hotel_arrival_time || null,
+                dinner_time: editingDay.dinner_time || null,
+                free_time_start: editingDay.free_time_start || null,
+                hotel_id: editingDay.hotel_id || null,
+                lunch_restaurant_id: editingDay.lunch_restaurant_id || null,
                 dinner_restaurant_id: editingDay.dinner_restaurant_id || null
             };
 
@@ -573,14 +579,14 @@ const AdminDailyInfoEdit = () => {
 
             if (newTravelers.length > 0) {
                 const { error } = await supabase.from('travelers').insert(
-                    newTravelers.map(t => ({ tour_id: activeTourId, name: t.name, departure_pickup_time: t.departure_pickup_time, departure_flight_time: t.departure_flight_time }))
+                    newTravelers.map(t => ({ tour_id: activeTourId, name: t.name, departure_pickup_time: t.departure_pickup_time || null, departure_flight_time: t.departure_flight_time || null }))
                 );
                 if (error) throw error;
             }
 
             if (existingTravelers.length > 0) {
                 const { error } = await supabase.from('travelers').upsert(
-                    existingTravelers.map(t => ({ id: t.id, tour_id: activeTourId, name: t.name, departure_pickup_time: t.departure_pickup_time, departure_flight_time: t.departure_flight_time })), { onConflict: 'id' }
+                    existingTravelers.map(t => ({ id: t.id, tour_id: activeTourId, name: t.name, departure_pickup_time: t.departure_pickup_time || null, departure_flight_time: t.departure_flight_time || null })), { onConflict: 'id' }
                 );
                 if (error) throw error;
             }
@@ -710,7 +716,7 @@ const AdminDailyInfoEdit = () => {
                             <div className="form-section">
                                 <h3>General Day Info</h3>
                                 <div className="input-row">
-                                    <div><label>Date of this Day</label><input type="date" required value={editingDay.date} onChange={e => handleDayFieldChange('date', e.target.value)} /></div>
+                                <div><label>Date of this Day</label><input type="date" value={editingDay.date} onChange={e => handleDayFieldChange('date', e.target.value)} /></div>
                                     <div><label>City (For Weather API)</label><input type="text" placeholder="e.g. Istanbul" value={editingDay.weather_city_name} onChange={e => handleDayFieldChange('weather_city_name', e.target.value)} /></div>
                                 </div>
                                 <div style={{ marginTop: '1rem' }}><label>Google My Maps Embed URL</label><input type="text" value={editingDay.route_map_embed_url} onChange={e => handleDayFieldChange('route_map_embed_url', e.target.value)} /></div>

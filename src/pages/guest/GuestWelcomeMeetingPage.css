@@ -523,3 +523,39 @@
     flex-shrink: 0;
     line-height: 1;
 }
+
+
+
+
+/* Meeting Details Card */
+.meeting-details-card {
+    border-left: 5px solid var(--color-terracotta);
+}
+
+.meeting-details-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.meeting-detail-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 160px;
+}
+
+.meeting-detail-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-terracotta);
+}
+
+.meeting-detail-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-dark-slate);
+}

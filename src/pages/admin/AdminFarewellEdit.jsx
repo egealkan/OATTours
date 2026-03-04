@@ -98,7 +98,14 @@ const AdminFarewellEdit = () => {
         try {
             // 1. Save Tour Info
             if (activeTourId) {
-                const { error: tourErr } = await supabase.from('tours').update(tourData).eq('id', activeTourId);
+                const cleanTourData = {
+                    farewell_meeting_time: tourData.farewell_meeting_time || null,
+                    farewell_dinner_restaurant_id: tourData.farewell_dinner_restaurant_id || null,
+                    learning_and_discoveries: tourData.learning_and_discoveries || null,
+                    controversial_topic: tourData.controversial_topic || null,
+                    goodbye_message: tourData.goodbye_message || null,
+                };
+                const { error: tourErr } = await supabase.from('tours').update(cleanTourData).eq('id', activeTourId);
                 if (tourErr) throw tourErr;
             }
 
@@ -109,14 +116,14 @@ const AdminFarewellEdit = () => {
 
             if (newTravelers.length > 0) {
                 const { error } = await supabase.from('travelers').insert(
-                    newTravelers.map(t => ({ tour_id: activeTourId, name: t.name, departure_pickup_time: t.departure_pickup_time, departure_flight_time: t.departure_flight_time }))
+                    newTravelers.map(t => ({ tour_id: activeTourId, name: t.name, departure_pickup_time: t.departure_pickup_time || null, departure_flight_time: t.departure_flight_time || null }))
                 );
                 if (error) throw error;
             }
 
             if (existingTravelers.length > 0) {
                 const { error } = await supabase.from('travelers').upsert(
-                    existingTravelers.map(t => ({ id: t.id, tour_id: activeTourId, name: t.name, departure_pickup_time: t.departure_pickup_time, departure_flight_time: t.departure_flight_time })), { onConflict: 'id' }
+                    existingTravelers.map(t => ({ id: t.id, tour_id: activeTourId, name: t.name, departure_pickup_time: t.departure_pickup_time || null, departure_flight_time: t.departure_flight_time || null })), { onConflict: 'id' }
                 );
                 if (error) throw error;
             }

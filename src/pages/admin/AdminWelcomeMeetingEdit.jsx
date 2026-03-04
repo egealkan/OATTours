@@ -1,21 +1,18 @@
 // import React, { useState, useEffect } from 'react';
 // import { supabase } from '../../services/supabaseClient';
 // import toast from 'react-hot-toast';
-// import ConfirmModal from '../../components/extras/ConfirmModal'; // Added import
+// import ConfirmModal from '../../components/extras/ConfirmModal';
+// import ImageUpload from '../../components/extras/ImageUpload';
 // import './AdminWelcomeMeetingEdit.css';
 
 // const AdminWelcomeMeetingEdit = () => {
 //     const [isLoading, setIsLoading] = useState(true);
 //     const [isSaving, setIsSaving] = useState(false);
     
-//     // Core Tour ID
 //     const [activeTourId, setActiveTourId] = useState(null);
-
-//     // Dictionaries for dropdowns
 //     const [hotelsRoster, setHotelsRoster] = useState([]);
 //     const [restaurantsRoster, setRestaurantsRoster] = useState([]);
 
-//     // --- FORM STATES ---
 //     const [guideData, setGuideData] = useState({ id: 1, name: '', about_me: '', years_at_oat: '', profile_image_url: '' });
     
 //     const [tourData, setTourData] = useState({
@@ -28,17 +25,11 @@
 //     const [editingHotel, setEditingHotel] = useState({ id: 'new', name: '', description: '', image_url: '' });
 //     const [editingRestaurant, setEditingRestaurant] = useState({ id: 'new', name: '' });
 
-//     // NEW: Custom Confirm Dialog State
 //     const [confirmConfig, setConfirmConfig] = useState({
-//         isOpen: false,
-//         title: '',
-//         message: '',
-//         onConfirm: () => {}
+//         isOpen: false, title: '', message: '', onConfirm: () => {}
 //     });
 
-//     useEffect(() => {
-//         fetchAllData();
-//     }, []);
+//     useEffect(() => { fetchAllData(); }, []);
 
 //     const fetchAllData = async () => {
 //         setIsLoading(true);
@@ -77,7 +68,6 @@
 //         }
 //     };
 
-//     // --- REPLACED WINDOW.CONFIRM WITH CUSTOM MODAL ---
 //     const handleDeleteItem = (table, itemState, setItemState, rosterSetter) => {
 //         if (itemState.id === 'new') return;
         
@@ -90,13 +80,10 @@
 //                 try {
 //                     const { error } = await supabase.from(table).delete().eq('id', itemState.id);
 //                     if (error) throw error;
-
 //                     toast.success('Deleted permanently.', { id: toastId });
 //                     rosterSetter(prev => prev.filter(i => i.id !== itemState.id));
-                    
 //                     if (table === 'hotels') setItemState({ id: 'new', name: '', description: '', image_url: '' });
 //                     if (table === 'restaurants') setItemState({ id: 'new', name: '' });
-                    
 //                 } catch (error) {
 //                     toast.error('Failed to delete item.', { id: toastId });
 //                 }
@@ -143,7 +130,7 @@
 //             }
 
 //             toast.success('All Data Saved Successfully!', { id: toastId });
-//             fetchAllData(); 
+//             fetchAllData();
 
 //         } catch (error) {
 //             console.error(error);
@@ -160,13 +147,12 @@
 //     return (
 //         <div className="admin-edit-wrapper">
             
-//             {/* INJECT CUSTOM MODAL COMPONENT */}
-//             <ConfirmModal 
+//             <ConfirmModal
 //                 isOpen={confirmConfig.isOpen}
 //                 title={confirmConfig.title}
 //                 message={confirmConfig.message}
 //                 onConfirm={confirmConfig.onConfirm}
-//                 onClose={() => setConfirmConfig({ ...confirmConfig, isOpen: false })}
+//                 onClose={() => setConfirmConfig(c => ({ ...c, isOpen: false }))}
 //             />
 
 //             <div className="admin-edit-header">
@@ -183,7 +169,13 @@
 //                         <div><label>Name</label><input type="text" value={guideData.name} onChange={e => setGuideData({...guideData, name: e.target.value})} placeholder="e.g. Ege Alkan" /></div>
 //                         <div><label>Years at OAT</label><input type="number" value={guideData.years_at_oat} onChange={e => setGuideData({...guideData, years_at_oat: e.target.value})} /></div>
 //                     </div>
-//                     <div><label>Profile Image URL</label><input type="text" value={guideData.profile_image_url} onChange={e => setGuideData({...guideData, profile_image_url: e.target.value})} placeholder="https://..." /></div>
+//                     {/* REPLACED: URL input → ImageUpload component */}
+//                     <ImageUpload
+//                         currentUrl={guideData.profile_image_url}
+//                         onUpload={(url) => setGuideData(g => ({ ...g, profile_image_url: url }))}
+//                         folder="guide"
+//                         label="Profile Photo"
+//                     />
 //                     <div><label>About Me</label><textarea value={guideData.about_me} onChange={e => setGuideData({...guideData, about_me: e.target.value})} /></div>
 //                 </div>
 
@@ -223,7 +215,6 @@
 //                             </select>
 //                         </div>
 //                     </div>
-                    
 //                     <div className="input-row" style={{ marginTop: '1rem' }}>
 //                         <div><label>Home Hosted Dinner</label><input type="text" value={tourData.home_hosted_village} onChange={e => handleTourDataChange('home_hosted_village', e.target.value)} /></div>
 //                         <div><label>Home Hosted Family Names</label><input type="text" value={tourData.home_hosted_family_names} onChange={e => handleTourDataChange('home_hosted_family_names', e.target.value)} /></div>
@@ -265,7 +256,13 @@
 //                     </div>
 //                     <div><label>Hotel Name</label><input type="text" value={editingHotel.name} onChange={e => setEditingHotel({...editingHotel, name: e.target.value})} /></div>
 //                     <div style={{ marginTop: '0.5rem' }}><label>Description</label><textarea value={editingHotel.description} onChange={e => setEditingHotel({...editingHotel, description: e.target.value})} /></div>
-//                     <div style={{ marginTop: '0.5rem' }}><label>Image URL</label><input type="text" value={editingHotel.image_url} onChange={e => setEditingHotel({...editingHotel, image_url: e.target.value})} /></div>
+//                     {/* REPLACED: URL input → ImageUpload component */}
+//                     <ImageUpload
+//                         currentUrl={editingHotel.image_url}
+//                         onUpload={(url) => setEditingHotel(h => ({ ...h, image_url: url }))}
+//                         folder="hotels"
+//                         label="Hotel Photo"
+//                     />
 //                 </div>
 
 //                 {/* 6. RESTAURANT DICTIONARY CRUD */}
@@ -278,7 +275,7 @@
 //                             if (val === 'new') setEditingRestaurant({ id: 'new', name: '' });
 //                             else setEditingRestaurant({ ...restaurantsRoster.find(r => r.id.toString() === val) });
 //                         }}>
-//                             <option value="new">+ Create New Restaurant</option>
+//                             <option value="+ Create New Restaurant">+ Create New Restaurant</option>
 //                             {restaurantsRoster.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
 //                         </select>
 //                         {editingRestaurant.id !== 'new' && (
@@ -302,6 +299,9 @@
 
 
 
+
+
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../services/supabaseClient';
 import toast from 'react-hot-toast';
@@ -320,6 +320,8 @@ const AdminWelcomeMeetingEdit = () => {
     const [guideData, setGuideData] = useState({ id: 1, name: '', about_me: '', years_at_oat: '', profile_image_url: '' });
     
     const [tourData, setTourData] = useState({
+        welcome_meeting_time: '',
+        welcome_meeting_location: '',
         general_trip_info: '', gullet_name: '', gullet_direction: 'Fethiye to Marmaris',
         welcome_dinner_restaurant_id: '', farewell_dinner_restaurant_id: '',
         home_hosted_village: '', home_hosted_family_names: '', day_in_life_activity: '',
@@ -342,7 +344,10 @@ const AdminWelcomeMeetingEdit = () => {
             if (activeTour) {
                 setActiveTourId(activeTour.id);
                 setTourData({
-                    general_trip_info: activeTour.general_trip_info || '', gullet_name: activeTour.gullet_name || '',
+                    welcome_meeting_time: activeTour.welcome_meeting_time || '',
+                    welcome_meeting_location: activeTour.welcome_meeting_location || '',
+                    general_trip_info: activeTour.general_trip_info || '',
+                    gullet_name: activeTour.gullet_name || '',
                     gullet_direction: activeTour.gullet_direction || 'Fethiye to Marmaris',
                     welcome_dinner_restaurant_id: activeTour.welcome_dinner_restaurant_id || '',
                     farewell_dinner_restaurant_id: activeTour.farewell_dinner_restaurant_id || '',
@@ -374,7 +379,6 @@ const AdminWelcomeMeetingEdit = () => {
 
     const handleDeleteItem = (table, itemState, setItemState, rosterSetter) => {
         if (itemState.id === 'new') return;
-        
         setConfirmConfig({
             isOpen: true,
             title: `Delete ${table === 'hotels' ? 'Hotel' : 'Restaurant'}?`,
@@ -402,7 +406,23 @@ const AdminWelcomeMeetingEdit = () => {
 
         try {
             if (activeTourId) {
-                const { error: tourErr } = await supabase.from('tours').update(tourData).eq('id', activeTourId);
+                const cleanTourData = {
+                    ...tourData,
+                    welcome_meeting_time: tourData.welcome_meeting_time || null,
+                    welcome_meeting_location: tourData.welcome_meeting_location || null,
+                    domestic_flight_date: tourData.domestic_flight_date || null,
+                    domestic_flight_time: tourData.domestic_flight_time || null,
+                    welcome_dinner_restaurant_id: tourData.welcome_dinner_restaurant_id || null,
+                    farewell_dinner_restaurant_id: tourData.farewell_dinner_restaurant_id || null,
+                    gullet_name: tourData.gullet_name || null,
+                    general_trip_info: tourData.general_trip_info || null,
+                    domestic_flight_airport: tourData.domestic_flight_airport || null,
+                    domestic_flight_city: tourData.domestic_flight_city || null,
+                    home_hosted_village: tourData.home_hosted_village || null,
+                    home_hosted_family_names: tourData.home_hosted_family_names || null,
+                    day_in_life_activity: tourData.day_in_life_activity || null,
+                };
+                const { error: tourErr } = await supabase.from('tours').update(cleanTourData).eq('id', activeTourId);
                 if (tourErr) throw tourErr;
             } else {
                 const { data: newTour, error: insertTourErr } = await supabase.from('tours').insert([{ ...tourData, is_active: true }]).select().single();
@@ -465,15 +485,39 @@ const AdminWelcomeMeetingEdit = () => {
             </div>
 
             <form className="edit-form-card" onSubmit={handleSaveAll}>
-                
-                {/* 1. GUIDE PROFILE */}
+
+                {/* 1. WELCOME MEETING LOGISTICS */}
+                <div className="form-section">
+                    <h3>Welcome Meeting Details</h3>
+                    <p className="hint-text">This appears as the first card guests see on the Welcome Meeting page.</p>
+                    <div className="input-row">
+                        <div>
+                            <label>Meeting Time</label>
+                            <input
+                                type="time"
+                                value={tourData.welcome_meeting_time}
+                                onChange={e => handleTourDataChange('welcome_meeting_time', e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label>Meeting Location</label>
+                            <input
+                                type="text"
+                                placeholder="e.g. Hotel lobby, Conference Room B"
+                                value={tourData.welcome_meeting_location}
+                                onChange={e => handleTourDataChange('welcome_meeting_location', e.target.value)}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* 2. GUIDE PROFILE */}
                 <div className="form-section">
                     <h3>Your Guide Profile</h3>
                     <div className="input-row">
                         <div><label>Name</label><input type="text" value={guideData.name} onChange={e => setGuideData({...guideData, name: e.target.value})} placeholder="e.g. Ege Alkan" /></div>
                         <div><label>Years at OAT</label><input type="number" value={guideData.years_at_oat} onChange={e => setGuideData({...guideData, years_at_oat: e.target.value})} /></div>
                     </div>
-                    {/* REPLACED: URL input → ImageUpload component */}
                     <ImageUpload
                         currentUrl={guideData.profile_image_url}
                         onUpload={(url) => setGuideData(g => ({ ...g, profile_image_url: url }))}
@@ -483,7 +527,7 @@ const AdminWelcomeMeetingEdit = () => {
                     <div><label>About Me</label><textarea value={guideData.about_me} onChange={e => setGuideData({...guideData, about_me: e.target.value})} /></div>
                 </div>
 
-                {/* 2. GENERAL TRIP & GULLET INFO */}
+                {/* 3. GENERAL TRIP & GULLET INFO */}
                 <div className="form-section">
                     <h3>Trip & Gullet Info</h3>
                     <div><label>General Trip Info</label><textarea value={tourData.general_trip_info} onChange={e => handleTourDataChange('general_trip_info', e.target.value)} /></div>
@@ -499,7 +543,7 @@ const AdminWelcomeMeetingEdit = () => {
                     </div>
                 </div>
 
-                {/* 3. SPECIAL DINNERS & ACTIVITIES */}
+                {/* 4. SPECIAL DINNERS & ACTIVITIES */}
                 <div className="form-section">
                     <h3>Special Dinners & Village Activity</h3>
                     <p className="hint-text">If a restaurant is missing, add it in the Dictionary Builder at the bottom first.</p>
@@ -526,7 +570,7 @@ const AdminWelcomeMeetingEdit = () => {
                     <div style={{ marginTop: '1rem' }}><label>Day in the Life Activity</label><input type="text" value={tourData.day_in_life_activity} onChange={e => handleTourDataChange('day_in_life_activity', e.target.value)} /></div>
                 </div>
 
-                {/* 4. DOMESTIC FLIGHT */}
+                {/* 5. DOMESTIC FLIGHT */}
                 <div className="form-section">
                     <h3>Domestic Flight Info</h3>
                     <div className="input-row">
@@ -539,7 +583,7 @@ const AdminWelcomeMeetingEdit = () => {
                     </div>
                 </div>
 
-                {/* 5. HOTEL DICTIONARY CRUD */}
+                {/* 6. HOTEL DICTIONARY CRUD */}
                 <div className="form-section">
                     <h3>Hotel Dictionary Builder</h3>
                     <label>Select Hotel to Edit/Delete, or Add New:</label>
@@ -560,7 +604,6 @@ const AdminWelcomeMeetingEdit = () => {
                     </div>
                     <div><label>Hotel Name</label><input type="text" value={editingHotel.name} onChange={e => setEditingHotel({...editingHotel, name: e.target.value})} /></div>
                     <div style={{ marginTop: '0.5rem' }}><label>Description</label><textarea value={editingHotel.description} onChange={e => setEditingHotel({...editingHotel, description: e.target.value})} /></div>
-                    {/* REPLACED: URL input → ImageUpload component */}
                     <ImageUpload
                         currentUrl={editingHotel.image_url}
                         onUpload={(url) => setEditingHotel(h => ({ ...h, image_url: url }))}
@@ -569,7 +612,7 @@ const AdminWelcomeMeetingEdit = () => {
                     />
                 </div>
 
-                {/* 6. RESTAURANT DICTIONARY CRUD */}
+                {/* 7. RESTAURANT DICTIONARY CRUD */}
                 <div className="form-section">
                     <h3>Restaurant Dictionary Builder</h3>
                     <label>Select Restaurant to Edit/Delete, or Add New:</label>
@@ -579,7 +622,7 @@ const AdminWelcomeMeetingEdit = () => {
                             if (val === 'new') setEditingRestaurant({ id: 'new', name: '' });
                             else setEditingRestaurant({ ...restaurantsRoster.find(r => r.id.toString() === val) });
                         }}>
-                            <option value="+ Create New Restaurant">+ Create New Restaurant</option>
+                            <option value="new">+ Create New Restaurant</option>
                             {restaurantsRoster.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
                         </select>
                         {editingRestaurant.id !== 'new' && (

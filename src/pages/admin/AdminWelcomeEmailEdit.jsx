@@ -205,7 +205,7 @@ const AdminWelcomeEmailEdit = () => {
                     </div>
                     <div>
                         <label>Detailed Climate Information</label>
-                        <textarea value={climateInfo} onChange={(e) => setClimateInfo(e.target.value)} placeholder="Enter expected weather changes, recommended clothing, etc." required />
+                        <textarea value={climateInfo} onChange={(e) => setClimateInfo(e.target.value)} placeholder="Enter expected weather changes, recommended clothing, etc." />
                     </div>
                 </div>
 
