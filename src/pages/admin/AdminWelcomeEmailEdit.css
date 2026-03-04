@@ -23,7 +23,6 @@
     font-size: 1.1rem;
 }
 
-/* --- THE NEW FLOATING LAYOUT --- */
 .edit-form-card {
     display: flex;
     flex-direction: column;
@@ -40,11 +39,14 @@
     border-radius: 16px;
     border: none;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-    /* Removed transition from base — only used on true hover devices below */
 }
 
-/* FIX: Only apply the lift transform on real pointer devices (mouse/trackpad).
-   On iPad (touch), hover states stick after a tap, pushing sections up and causing overlap. */
+/*
+ * FIX 1 — OVERLAP: The translateY(-3px) was the overlap culprit on iPad.
+ * On touch devices, tapping an input fires a hover event that stays "stuck",
+ * physically pushing the card up into the card above it. Restrict lift to
+ * real pointer (mouse/trackpad) devices only.
+ */
 @media (hover: hover) and (pointer: fine) {
     .form-section {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -63,7 +65,6 @@
     border-bottom: 2px solid #f1f5f9;
 }
 
-/* --- AUTO-NUMBERING --- */
 .form-section h3::before {
     counter-increment: form-section-counter;
     content: counter(form-section-counter) ". ";
@@ -73,8 +74,6 @@
 
 .dropdown-action-row {
     display: flex;
-    /* FIX: flex-wrap so the Delete button drops below on narrow screens
-       instead of squashing the select or overflowing the border */
     flex-wrap: wrap;
     gap: 1rem;
     align-items: center;
@@ -83,8 +82,7 @@
 
 select {
     flex-grow: 1;
-    /* FIX: min-width prevents select from collapsing to 0 in a flex row */
-    min-width: 200px;
+    min-width: 0;
     padding: 14px 16px;
     padding-right: 40px;
     border: 1px solid #d1d5db;
@@ -102,8 +100,6 @@ select {
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 16px;
-    /* FIX: stops iOS/iPadOS from auto-resizing the select wider than its column */
-    min-width: 0;
     box-sizing: border-box;
 }
 
@@ -124,7 +120,6 @@ select:focus {
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
-    /* FIX: flex-shrink 0 keeps button from shrinking into its border */
     flex-shrink: 0;
 }
 
@@ -141,8 +136,14 @@ select:focus {
     gap: 1.5rem;
 }
 
-/* FIX: min-width:0 on grid children prevents inputs from bursting out of columns on Safari/iPad */
-.input-row > * {
+/*
+ * FIX 2 — OVERFLOW OUT OF BORDERS: Safari/iPadOS does not automatically
+ * constrain grid children to their column width. Without min-width:0 on the
+ * <div> wrapping each label+input pair, the input computes width:100% of its
+ * own intrinsic size instead of the column size, and punches through the card
+ * border. This single rule is what stops the overflow.
+ */
+.input-row > div {
     min-width: 0;
 }
 
@@ -168,7 +169,6 @@ textarea {
     transition: all 0.2s ease-in-out;
     font-family: inherit;
     outline: none;
-    /* FIX: box-sizing ensures padding is included inside the 100% width */
     box-sizing: border-box;
     min-width: 0;
 }
@@ -186,7 +186,6 @@ textarea:focus {
     background-color: var(--color-pamukkale-white);
 }
 
-/* --- STICKY SAVE BUTTON --- */
 .save-button {
     background-color: var(--color-aegean-blue);
     color: var(--color-pamukkale-white);
@@ -213,13 +212,13 @@ textarea:focus {
     transform: translateY(0);
 }
 
-/* -------------------------------------------------------------------------
-   FIX: Raised breakpoint from 1024px → 1200px.
-   iPad Air 11" in landscape is ~1194px wide — the old 1024px breakpoint
-   never fired in landscape, leaving two-column inputs side-by-side in a
-   space too narrow for them, causing the overlap you were seeing.
-------------------------------------------------------------------------- */
-@media (max-width: 1200px) {
+/*
+ * Breakpoint restored to original 1024px.
+ * iPad Air 11" landscape is ~1180px so it stays two-column — correct.
+ * iPad Air 11" portrait is ~820px so it goes single-column — correct.
+ * The overlap was the hover transform (fixed above), not the layout width.
+ */
+@media (max-width: 1024px) {
     .input-row {
         grid-template-columns: 1fr;
     }
@@ -234,7 +233,6 @@ textarea:focus {
         padding: 1.5rem;
     }
     select {
-        min-width: 0;
         width: 100%;
     }
 }

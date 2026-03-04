@@ -1,15 +1,12 @@
 /* -------------------------------------------------------------------------
-   CRITICAL LAYOUT FIX: Forces Apple Devices to obey grid calculations 
-   and stops text boxes from expanding past their columns.
+   Forces Apple Devices to obey grid calculations.
 ------------------------------------------------------------------------- */
-.admin-edit-wrapper *, 
-.modal-overlay *, 
-.admin-edit-wrapper *::before, 
+.admin-edit-wrapper *,
+.modal-overlay *,
+.admin-edit-wrapper *::before,
 .admin-edit-wrapper *::after {
     box-sizing: border-box;
 }
-
-/* ------------------------------------------------------------------------- */
 
 .admin-edit-wrapper {
     max-width: 900px;
@@ -49,7 +46,6 @@
     padding: 1.5rem;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
     cursor: pointer;
-    /* FIX: no transition on base — only on real hover devices below */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -57,9 +53,11 @@
     border: 2px solid transparent;
 }
 
-/* FIX: On iPad, tapping a day-card triggers a sticky hover state that
-   shifts the card up and causes it to overlap neighboring cards.
-   Restrict the lift transform to true pointer (mouse) devices only. */
+/*
+ * FIX 1 — OVERLAP: On iPad, tapping a day card fires a sticky hover
+ * state that shifts the card upward and overlaps the neighboring card.
+ * Restrict the transform to real pointer (mouse) devices only.
+ */
 @media (hover: hover) and (pointer: fine) {
     .day-card {
         transition: all 0.2s ease;
@@ -68,6 +66,10 @@
         transform: translateY(-5px);
         box-shadow: 0 12px 24px rgba(0, 128, 168, 0.1);
         border-color: rgba(0, 128, 168, 0.3);
+    }
+    .day-card.create-new:hover {
+        background-color: rgba(255, 213, 46, 0.1);
+        border-color: var(--color-anatolian-sun);
     }
 }
 
@@ -113,14 +115,6 @@
     margin-bottom: 0;
 }
 
-/* FIX: create-new hover also guarded for touch devices */
-@media (hover: hover) and (pointer: fine) {
-    .day-card.create-new:hover {
-        background-color: rgba(255, 213, 46, 0.1);
-        border-color: var(--color-anatolian-sun);
-    }
-}
-
 /* --- TRAVELER LIST STYLES --- */
 .traveler-header-row {
     display: grid;
@@ -152,8 +146,10 @@
     border-radius: 8px;
 }
 
-/* FIX: all direct children need min-width:0 to prevent Safari from
-   ignoring column sizing and letting inputs push past their column edge */
+/*
+ * FIX 2 — OVERFLOW: min-width:0 on every direct child of the traveler-row
+ * grid forces Safari/iPad to constrain inputs to their column width.
+ */
 .traveler-row > * {
     min-width: 0;
 }
@@ -233,7 +229,6 @@
     display: flex; justify-content: space-between; align-items: center;
     border-bottom: 2px solid #e2e8f0;
     z-index: 10;
-    /* FIX: flex-shrink:0 keeps header from being compressed by modal body */
     flex-shrink: 0;
 }
 
@@ -256,26 +251,26 @@
     display: grid; grid-template-columns: 1fr 1fr 40px; gap: 10px;
 }
 
-/* FIX: place-edit-row children need min-width:0 on iPad/Safari */
+/* FIX 2 continued — overflow fix for place-edit-row cells */
 .place-edit-row > * {
     min-width: 0;
 }
 
-/* -------------------------------------------------------------------------
-   FIX: Replaced the broken negative-margin approach with a clean sticky bar.
-   The old `margin-left: -24px; width: calc(100% + 48px); bottom: -24px`
-   caused the action bar to overlap form content as the user scrolled inside
-   the modal on iPad. This version uses overflow:hidden on the modal instead.
-------------------------------------------------------------------------- */
+/*
+ * FIX 3 — MODAL ACTION BAR: Replaced the broken negative-margin bleed
+ * (bottom:-24px, margin-left:-24px, width:calc(100%+48px)) which was causing
+ * the bar to overlap form content during scroll on iPad. Now it's a clean
+ * flex-shrink:0 footer that sits naturally at the bottom of the flex column.
+ */
 .modal-action-bar {
     flex-shrink: 0;
     background-color: var(--color-pamukkale-white);
     padding: 16px 24px;
     border-top: 1px solid #e2e8f0;
-    display: flex; 
-    justify-content: space-between; 
+    display: flex;
+    justify-content: space-between;
     gap: 16px;
-    box-shadow: 0 -6px 16px rgba(0,0,0,0.06);
+    box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.06);
 }
 
 .save-button, .save-button-modal {
@@ -296,99 +291,87 @@
 .btn-danger-modal:hover { background-color: var(--color-terracotta); color: white; }
 
 /* --- INPUT STYLES --- */
-.input-row { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 1.5rem; 
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
 }
 
-/* FIX: min-width:0 on grid children is critical on iPad Safari —
-   without it, inputs calculate their own intrinsic width and overflow the column */
-.input-row > * {
+/* FIX 2 continued — overflow fix for input-row grid cells */
+.input-row > div {
     min-width: 0;
 }
 
-label { 
-    color: var(--color-dark-slate); 
-    font-weight: 600; 
-    font-size: 14px; 
-    margin-bottom: 8px; 
-    display: block; 
-    opacity: 0.9; 
+label {
+    color: var(--color-dark-slate); font-weight: 600; font-size: 14px;
+    margin-bottom: 8px; display: block; opacity: 0.9;
 }
 
 input[type="text"], input[type="time"], input[type="date"], select {
-    width: 100%; 
-    padding: 14px 16px; 
-    border: 1px solid #d1d5db; 
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #d1d5db;
     border-radius: 10px;
-    font-size: 16px; 
-    color: var(--color-dark-slate); 
-    background-color: #f9fafb; 
-    outline: none; 
+    font-size: 16px;
+    color: var(--color-dark-slate);
+    background-color: #f9fafb;
+    outline: none;
     transition: all 0.2s;
     box-sizing: border-box;
-    min-width: 0; 
+    min-width: 0;
 }
 
-input:focus, select:focus { 
-    border-color: var(--color-aegean-blue); 
-    box-shadow: 0 0 0 3px rgba(0, 128, 168, 0.15); 
-    background-color: var(--color-pamukkale-white); 
+input:focus, select:focus {
+    border-color: var(--color-aegean-blue);
+    box-shadow: 0 0 0 3px rgba(0, 128, 168, 0.15);
+    background-color: var(--color-pamukkale-white);
 }
 
-select { 
-    appearance: none; 
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%230080a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>'); 
-    background-repeat: no-repeat; 
-    background-position: right 12px center; 
-    background-size: 16px; 
+select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%230080a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
 }
 
-/* -------------------------------------------------------------------------
-   FIX: Raised from 1100px → 1200px.
-   iPad Air 11" in landscape is ~1194px — the old 1100px breakpoint never
-   fired in landscape mode. Now both portrait (~820px) and landscape (~1194px)
-   get the stacked single-column layout inside the modal.
-------------------------------------------------------------------------- */
-@media (max-width: 1200px) {
-    .input-row { 
-        grid-template-columns: 1fr; 
+/* Breakpoint restored to original 1100px */
+@media (max-width: 1100px) {
+    .input-row {
+        grid-template-columns: 1fr;
     }
-    .input-row > * {
+    .input-row > div {
         min-width: 0;
     }
-    .traveler-header-row { 
-        display: none; 
-    }
-    .traveler-row { 
-        display: flex; 
-        flex-direction: column; 
-        gap: 12px; 
-        padding: 15px; 
+    .traveler-header-row { display: none; }
+    .traveler-row {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px;
     }
     .traveler-row > * {
         min-width: 0;
         width: 100%;
     }
-    .place-edit-row { 
-        display: flex; 
-        flex-direction: column; 
-        gap: 12px; 
-        background-color: #f8fafc; 
-        padding: 15px; 
-        border-radius: 8px; 
-        border: 1px solid #eaeaea; 
+    .place-edit-row {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background-color: #f8fafc;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #eaeaea;
     }
     .place-edit-row > * {
         min-width: 0;
         width: 100%;
     }
-    .btn-remove-small { 
-        width: 100%; 
-        padding: 14px; 
+    .btn-remove-small {
+        width: 100%;
+        padding: 14px;
     }
-    .modal-content { 
-        width: 95%; 
+    .modal-content {
+        width: 95%;
     }
 }

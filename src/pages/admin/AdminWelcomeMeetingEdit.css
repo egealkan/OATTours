@@ -39,12 +39,13 @@
     border-radius: 16px;
     border: none;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-    /* No transition in base — added only for real pointer devices below */
 }
 
-/* FIX: Guard the lift-on-hover with a pointer check.
-   On iPad, tapping an input triggers the hover state which stays "stuck",
-   shifting the section up and overlapping the one above. */
+/*
+ * FIX 1 — OVERLAP: Guard the lift transform to mouse-only devices.
+ * On iPad, tapping an input triggers a sticky hover state, causing the
+ * card to shift up and overlap the card above it.
+ */
 @media (hover: hover) and (pointer: fine) {
     .form-section {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -72,8 +73,6 @@
 
 .dropdown-action-row {
     display: flex;
-    /* FIX: wrap so Delete button falls below select on narrow screens
-       instead of pushing the select to collapse and touch its own border */
     flex-wrap: wrap;
     gap: 1rem;
     align-items: center;
@@ -82,7 +81,7 @@
 
 select {
     flex-grow: 1;
-    min-width: 200px;
+    min-width: 0;
     padding: 14px 16px;
     padding-right: 40px;
     border: 1px solid #d1d5db;
@@ -101,8 +100,6 @@ select {
     background-position: right 12px center;
     background-size: 16px;
     box-sizing: border-box;
-    /* FIX: prevents Safari/iPad from overriding the flex column width */
-    min-width: 0;
 }
 
 select:focus {
@@ -138,8 +135,12 @@ select:focus {
     gap: 1.5rem;
 }
 
-/* FIX: prevents inputs from overflowing their grid column on Safari/iPad */
-.input-row > * {
+/*
+ * FIX 2 — OVERFLOW OUT OF BORDERS: min-width:0 on the grid cell wrapper
+ * (<div> around label + input) forces Safari to respect the column boundary.
+ * Without it, inputs overflow outside the card's coloured border.
+ */
+.input-row > div {
     min-width: 0;
 }
 
@@ -223,18 +224,10 @@ textarea:focus {
     border-left: 3px solid var(--color-anatolian-sun);
 }
 
-/* -------------------------------------------------------------------------
-   FIX: Raised from 1024px → 1200px.
-   iPad Air 11" landscape viewport is ~1194px — the old 1024px breakpoint
-   never fired in landscape mode, leaving form fields side-by-side and
-   cramped. 1200px catches both portrait (~820px) and landscape (~1194px).
-------------------------------------------------------------------------- */
-@media (max-width: 1200px) {
+/* Breakpoint restored to original 1024px — see WelcomeEmailEdit.css for explanation */
+@media (max-width: 1024px) {
     .input-row {
         grid-template-columns: 1fr;
-    }
-    .input-row > * {
-        min-width: 0;
     }
     .dropdown-action-row {
         flex-direction: column;
@@ -247,7 +240,6 @@ textarea:focus {
         padding: 1.5rem;
     }
     select {
-        min-width: 0;
         width: 100%;
     }
 }
