@@ -375,3 +375,33 @@ select {
         width: 95%;
     }
 }
+
+
+
+
+
+
+/* Append these styles to the bottom of AdminDailyInfoEdit.css */
+
+/* Place edit block — replaces the old place-edit-row grid */
+.place-edit-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #f8fafc;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #eaeaea;
+    margin-bottom: 10px;
+}
+
+.place-edit-name-row {
+    display: grid;
+    grid-template-columns: 1fr 40px;
+    gap: 10px;
+    align-items: center;
+}
+
+.place-edit-name-row > * {
+    min-width: 0;
+}

@@ -59,6 +59,9 @@ const AdminNavbar = () => {
                         <NavLink to="/admin/edit-farewell" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} onClick={closeMenu}>
                             Farewell
                         </NavLink>
+                        <NavLink to="/admin/calendar" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} onClick={closeMenu}>
+                            Calendar
+                        </NavLink>
                     </div>
 
                     <button onClick={handleLogout} className="logout-button">

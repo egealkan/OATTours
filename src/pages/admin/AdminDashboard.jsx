@@ -6,8 +6,13 @@ import './AdminDashboard.css';
 
 const AdminDashboard = () => {
     const [passcode, setPasscode] = useState('');
-    const [isSaving, setIsSaving] = useState(false);
+    const [isSavingPasscode, setIsSavingPasscode] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+
+    // Pre-trip link state
+    const [preTripUrl, setPreTripUrl] = useState('');
+    const [preTripDescription, setPreTripDescription] = useState('');
+    const [isSavingLink, setIsSavingLink] = useState(false);
 
     useEffect(() => {
         fetchSettings();
@@ -16,12 +21,13 @@ const AdminDashboard = () => {
     const fetchSettings = async () => {
         setIsLoading(true);
         try {
-            // We fetch the row with ID 1 from the settings table
             const { data, error } = await supabase.from('settings').select('*').eq('id', 1).single();
-            if (error && error.code !== 'PGRST116') throw error; // Ignore "no rows" error initially
+            if (error && error.code !== 'PGRST116') throw error;
             
             if (data) {
                 setPasscode(data.guest_passcode || '');
+                setPreTripUrl(data.pre_trip_info_url || '');
+                setPreTripDescription(data.pre_trip_info_description || '');
             }
         } catch (error) {
             console.error(error);
@@ -34,16 +40,15 @@ const AdminDashboard = () => {
     const handleSavePasscode = async (e) => {
         e.preventDefault();
         
-        if (passcode.length !== 4) {
-            toast.error('Passcode must be exactly 4 digits.');
+        if (passcode.length !== 6) {
+            toast.error('Passcode must be exactly 6 digits.');
             return;
         }
 
-        setIsSaving(true);
+        setIsSavingPasscode(true);
         const toastId = toast.loading('Updating Passcode...');
 
         try {
-            // Upsert will update row ID 1 if it exists, or create it if it doesn't
             const { error } = await supabase.from('settings').upsert({ 
                 id: 1, 
                 guest_passcode: passcode 
@@ -56,13 +61,35 @@ const AdminDashboard = () => {
             console.error(error);
             toast.error('Failed to change passcode.', { id: toastId });
         } finally {
-            setIsSaving(false);
+            setIsSavingPasscode(false);
+        }
+    };
+
+    const handleSaveLink = async (e) => {
+        e.preventDefault();
+        setIsSavingLink(true);
+        const toastId = toast.loading('Saving link...');
+
+        try {
+            const { error } = await supabase.from('settings').upsert({
+                id: 1,
+                pre_trip_info_url: preTripUrl.trim() || null,
+                pre_trip_info_description: preTripDescription.trim() || null,
+            }, { onConflict: 'id' });
+
+            if (error) throw error;
+
+            toast.success('Pre-trip link saved!', { id: toastId });
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to save link.', { id: toastId });
+        } finally {
+            setIsSavingLink(false);
         }
     };
 
     const handlePasscodeChange = (e) => {
-        // Only allow numbers, max 4 digits
-        const value = e.target.value.replace(/\D/g, '').slice(0, 4);
+        const value = e.target.value.replace(/\D/g, '').slice(0, 6);
         setPasscode(value);
     };
 
@@ -114,13 +141,21 @@ const AdminDashboard = () => {
                                 <span>Wrap-up, Memories & Departures</span>
                             </div>
                         </Link>
+
+                        <Link to="/admin/calendar" className="dashboard-link">
+                            <span className="link-icon">📅</span>
+                            <div className="link-text">
+                                <strong>Tour Calendar</strong>
+                                <span>Schedule & View All Tour Dates</span>
+                            </div>
+                        </Link>
                     </div>
                 </div>
 
                 {/* --- SECURITY / PASSCODE CARD --- */}
                 <div className="dashboard-card security-card">
                     <h2>Guest Access Control</h2>
-                    <p>Change the 4-digit passcode required for guests to view the itinerary. Update this for every new tour group.</p>
+                    <p>Change the 6-digit passcode required for guests to view the itinerary. Update this for every new tour group.</p>
                     
                     <form onSubmit={handleSavePasscode} className="passcode-form">
                         <div className="passcode-display">
@@ -128,13 +163,13 @@ const AdminDashboard = () => {
                                 type="text" 
                                 value={passcode}
                                 onChange={handlePasscodeChange}
-                                placeholder="••••"
+                                placeholder="••••••"
                                 className="dashboard-passcode-input"
                             />
                         </div>
                         
-                        <button type="submit" className="dashboard-save-button" disabled={isSaving}>
-                            {isSaving ? 'Updating...' : 'Change Passcode'}
+                        <button type="submit" className="dashboard-save-button" disabled={isSavingPasscode}>
+                            {isSavingPasscode ? 'Updating...' : 'Change Passcode'}
                         </button>
                     </form>
 
@@ -144,6 +179,48 @@ const AdminDashboard = () => {
                 </div>
 
             </div>
+
+            {/* --- PRE-TRIP RESOURCE LINK CARD (full width) --- */}
+            <div className="dashboard-card resource-card">
+                <h2>Pre-Trip Resource Link</h2>
+                <p>
+                    Set an external link (e.g. an OAT website or PDF) that guests can access from the Pre-Trip Information page.
+                    Include a short description so guests know what they'll find there.
+                </p>
+
+                <form onSubmit={handleSaveLink} className="resource-form">
+                    <div>
+                        <label className="resource-label">Resource URL</label>
+                        <input
+                            type="text"
+                            className="resource-input"
+                            value={preTripUrl}
+                            onChange={e => setPreTripUrl(e.target.value)}
+                            placeholder="https://www.oattravel.com/pre-trip-info"
+                        />
+                    </div>
+                    <div>
+                        <label className="resource-label">Description for Guests</label>
+                        <textarea
+                            className="resource-input resource-textarea"
+                            value={preTripDescription}
+                            onChange={e => setPreTripDescription(e.target.value)}
+                            placeholder="Find detailed information about airport meeting points, what to pack, useful tips, and more to prepare for your journey."
+                        />
+                    </div>
+                    {preTripUrl && (
+                        <div>
+                            <a href={preTripUrl} target="_blank" rel="noopener noreferrer" className="resource-link-preview">
+                                🔗 Preview: {preTripUrl}
+                            </a>
+                        </div>
+                    )}
+                    <button type="submit" className="resource-save-btn" disabled={isSavingLink}>
+                        {isSavingLink ? 'Saving...' : 'Save Resource Link'}
+                    </button>
+                </form>
+            </div>
+
         </div>
     );
 };

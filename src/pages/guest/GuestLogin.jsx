@@ -53,15 +53,15 @@ const GuestLogin = () => {
                     </div>
 
                     <h1 className="guest-login-title">OAT Tours Turkey</h1>
-                    <p className="guest-login-subtitle">Please enter your 4-digit tour passcode to access your daily itinerary.</p>
+                    <p className="guest-login-subtitle">Please enter your 6-digit tour passcode to access your daily itinerary.</p>
                     
                     <form onSubmit={handleSubmit} className="guest-login-form">
                         <input 
                             type="password" 
-                            maxLength="4"
+                            maxLength="6"
                             value={passcode}
-                            onChange={(e) => setPasscode(e.target.value.replace(/\D/g, ''))} // Only allow numbers
-                            placeholder="••••"
+                            onChange={(e) => setPasscode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                            placeholder="••••••"
                             className="guest-passcode-input"
                             autoFocus
                             disabled={isLoading}
@@ -69,7 +69,7 @@ const GuestLogin = () => {
                         
                         {error && <p className="guest-error-text">{error}</p>}
                         
-                        <button type="submit" className="guest-login-button" disabled={isLoading || passcode.length !== 4}>
+                        <button type="submit" className="guest-login-button" disabled={isLoading || passcode.length !== 6}>
                             {isLoading ? 'Verifying...' : 'Enter Tour'}
                         </button>
                     </form>

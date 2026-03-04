@@ -30,6 +30,7 @@ const AdminWelcomeEmailEdit = React.lazy(() => import('./pages/admin/AdminWelcom
 const AdminWelcomeMeetingEdit = React.lazy(() => import('./pages/admin/AdminWelcomeMeetingEdit'));
 const AdminDailyInfoEdit = React.lazy(() => import('./pages/admin/AdminDailyInfoEdit'));
 const AdminFarewellEdit = React.lazy(() => import('./pages/admin/AdminFarewellEdit'));
+const AdminCalendar = React.lazy(() => import('./pages/admin/AdminCalendar'));
 
 // Fallback UI
 const LoadingFallback = () => (
@@ -71,6 +72,7 @@ function App() {
             <Route path="edit-welcome-meeting" element={<AdminWelcomeMeetingEdit />} />
             <Route path="edit-daily-info" element={<AdminDailyInfoEdit />} />
             <Route path="edit-farewell" element={<AdminFarewellEdit />} />
+            <Route path="calendar" element={<AdminCalendar />} />
           </Route>
         </Routes>
       </Suspense>

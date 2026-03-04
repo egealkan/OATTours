@@ -6,9 +6,11 @@ const GuestWelcomePage = () => {
   const [climateInfo, setClimateInfo] = useState('');
   const [contacts, setContacts] = useState({ transfers: [], office: [] });
   const [guideProfile, setGuideProfile] = useState(null);
+  const [preTripLink, setPreTripLink] = useState({ url: '', description: '' });
   
   const [isLoading, setIsLoading] = useState(true);
   const [isClimateModalOpen, setIsClimateModalOpen] = useState(false);
+  const [isGuideBioModalOpen, setIsGuideBioModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchWelcomeInfo = async () => {
@@ -37,7 +39,7 @@ const GuestWelcomePage = () => {
           });
         }
 
-        // 3. Fetch Guide Profile (About Me)
+        // 3. Fetch Guide Profile
         const { data: guideData, error: guideError } = await supabase
           .from('guide_profile')
           .select('*')
@@ -46,6 +48,20 @@ const GuestWelcomePage = () => {
         
         if (guideError && guideError.code !== 'PGRST116') console.error('Error fetching guide profile:', guideError);
         else if (guideData) setGuideProfile(guideData);
+
+        // 4. Fetch pre-trip link from settings
+        const { data: settingsData } = await supabase
+          .from('settings')
+          .select('pre_trip_info_url, pre_trip_info_description')
+          .eq('id', 1)
+          .single();
+        
+        if (settingsData) {
+          setPreTripLink({
+            url: settingsData.pre_trip_info_url || '',
+            description: settingsData.pre_trip_info_description || ''
+          });
+        }
 
       } catch (err) {
         console.error('Unexpected error:', err);
@@ -57,18 +73,21 @@ const GuestWelcomePage = () => {
     fetchWelcomeInfo();
   }, []);
 
-  // Prevent background scrolling when modal is open
+  // Prevent background scrolling when any modal is open
   useEffect(() => {
-    if (isClimateModalOpen) {
+    if (isClimateModalOpen || isGuideBioModalOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [isClimateModalOpen]);
+  }, [isClimateModalOpen, isGuideBioModalOpen]);
 
   if (isLoading) {
     return <div className="loading-spinner">Loading Pre-Trip Information...</div>;
   }
+
+  const BIO_PREVIEW_LENGTH = 200;
+  const bioIsLong = guideProfile?.about_me && guideProfile.about_me.length > BIO_PREVIEW_LENGTH;
 
   return (
     <div className="guest-page-wrapper">
@@ -77,7 +96,7 @@ const GuestWelcomePage = () => {
         <p>Everything you need to know before you arrive in Turkey.</p>
       </div>
 
-      {/* Guide "About Me" Card */}
+      {/* Guide "About Me" Card — now with modal for long bios */}
       {guideProfile && (
         <div className="info-card guide-card">
           <h2>👋 Meet Your Guide</h2>
@@ -95,10 +114,42 @@ const GuestWelcomePage = () => {
                 <span className="guide-badge">{guideProfile.years_at_oat} Years at OAT</span>
               )}
               <p className="about-me-text">
-                {guideProfile.about_me || "I can't wait to meet you all and explore Turkey together!"}
+                {bioIsLong
+                  ? `${guideProfile.about_me.substring(0, BIO_PREVIEW_LENGTH)}...`
+                  : (guideProfile.about_me || "I can't wait to meet you all and explore Turkey together!")
+                }
               </p>
+              {bioIsLong && (
+                <button
+                  className="btn-open-modal"
+                  style={{ marginTop: '10px' }}
+                  onClick={() => setIsGuideBioModalOpen(true)}
+                >
+                  Read Full Bio
+                </button>
+              )}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Pre-Trip Resource Link Card */}
+      {preTripLink.url && (
+        <div className="info-card center-card">
+          <h2>📋 Pre-Trip Essentials</h2>
+          <p className="climate-summary">
+            {preTripLink.description ||
+              'Find detailed information about airport meeting points, what to pack, useful tips, and more to prepare for your journey.'}
+          </p>
+          <a
+            href={preTripLink.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-open-modal"
+            style={{ display: 'inline-block', textDecoration: 'none' }}
+          >
+            View Pre-Trip Guide →
+          </a>
         </div>
       )}
 
@@ -157,12 +208,27 @@ const GuestWelcomePage = () => {
         </div>
       </div>
 
+      {/* GUIDE BIO MODAL */}
+      {isGuideBioModalOpen && (
+        <div className="modal-overlay" onClick={() => setIsGuideBioModalOpen(false)}>
+          <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>👋 About {guideProfile?.name}</h2>
+              <button className="btn-close-modal" onClick={() => setIsGuideBioModalOpen(false)}>&times;</button>
+            </div>
+            <div className="modal-body">
+              <p className="climate-text">{guideProfile?.about_me}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* CLIMATE MODAL */}
       {isClimateModalOpen && (
         <div className="modal-overlay" onClick={() => setIsClimateModalOpen(false)}>
           <div className="modal-container" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>🌤️ Climate & Weather</h2>
+              <h2>🌤️ Climate & Useful Tips</h2>
               <button className="btn-close-modal" onClick={() => setIsClimateModalOpen(false)}>&times;</button>
             </div>
             <div className="modal-body">
