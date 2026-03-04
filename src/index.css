@@ -7,6 +7,17 @@
   --white: #ffffff;
 }
 
+/* 1. Forces padding and borders to be included IN the 100% width, preventing overlap */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 2. Forces inputs to stay strictly inside their grid columns on Apple devices */
+input, select, textarea {
+  min-width: 0; 
+}
+
+
 body {
   background-color: #fbfbe1; /* A very soft grey/blue to make the white cards pop */
   color: var(--color-dark-slate);
