@@ -17,6 +17,22 @@ input, select, textarea {
   min-width: 0; 
 }
 
+.input-row {
+  overflow: hidden;
+}
+
+.input-row > div {
+  min-width: 0;
+  overflow: hidden;
+}
+
+input[type="date"],
+input[type="time"] {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
 
 body {
   background-color: #fbfbe1; /* A very soft grey/blue to make the white cards pop */
