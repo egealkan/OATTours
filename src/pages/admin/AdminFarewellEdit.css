@@ -39,12 +39,19 @@
     padding: 2rem; 
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* No transition here — only on real hover devices below */
 }
 
-.form-section:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+/* FIX: iPad touch events trigger and "stick" hover states, causing the
+   translateY to fire and overlap the section above. Restrict to mouse only. */
+@media (hover: hover) and (pointer: fine) {
+    .form-section {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-section:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    }
 }
 
 .form-section h3 {
@@ -101,6 +108,9 @@
 .traveler-header-cell {
     display: flex;
     align-items: flex-end;
+    /* FIX: prevents header cells from overflowing their column */
+    min-width: 0;
+    overflow: hidden;
 }
 
 .traveler-row {
@@ -112,6 +122,14 @@
     background-color: #f8fafc;
     padding: 10px;
     border-radius: 8px;
+    /* FIX: ensure each grid cell can shrink properly */
+    min-width: 0;
+}
+
+/* FIX: all cells in traveler-row need min-width:0 to prevent
+   inputs from bursting out of their columns on iPad/Safari */
+.traveler-row > * {
+    min-width: 0;
 }
 
 .traveler-number {
@@ -128,6 +146,8 @@
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
+    /* FIX: min-height so button doesn't collapse when row wraps */
+    min-height: 40px;
 }
 
 .btn-remove-small:hover { background-color: var(--color-terracotta); color: white; }
@@ -147,14 +167,54 @@
 .btn-add-secondary:hover { background-color: rgba(0, 128, 168, 0.05); }
 
 /* --- INPUT STYLES --- */
-.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-label { color: var(--color-dark-slate); font-weight: 600; font-size: 14px; margin-bottom: 8px; display: block; opacity: 0.9; }
-input[type="text"], input[type="time"], input[type="date"], textarea, select {
-    width: 100%; padding: 14px 16px; border: 1px solid #d1d5db; border-radius: 10px;
-    font-size: 16px; color: var(--color-dark-slate); background-color: #f9fafb; outline: none; transition: all 0.2s; font-family: inherit;
+.input-row { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 1.5rem; 
 }
-input:focus, textarea:focus, select:focus { border-color: var(--color-aegean-blue); box-shadow: 0 0 0 3px rgba(0, 128, 168, 0.15); background-color: var(--color-pamukkale-white); }
-select { appearance: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%230080a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>'); background-repeat: no-repeat; background-position: right 12px center; background-size: 16px; }
+
+/* FIX: min-width:0 on grid children prevents Safari from ignoring column widths */
+.input-row > * {
+    min-width: 0;
+}
+
+label { 
+    color: var(--color-dark-slate); 
+    font-weight: 600; 
+    font-size: 14px; 
+    margin-bottom: 8px; 
+    display: block; 
+    opacity: 0.9; 
+}
+
+input[type="text"], input[type="time"], input[type="date"], textarea, select {
+    width: 100%; 
+    padding: 14px 16px; 
+    border: 1px solid #d1d5db; 
+    border-radius: 10px;
+    font-size: 16px; 
+    color: var(--color-dark-slate); 
+    background-color: #f9fafb; 
+    outline: none; 
+    transition: all 0.2s; 
+    font-family: inherit;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+input:focus, textarea:focus, select:focus { 
+    border-color: var(--color-aegean-blue); 
+    box-shadow: 0 0 0 3px rgba(0, 128, 168, 0.15); 
+    background-color: var(--color-pamukkale-white); 
+}
+
+select { 
+    appearance: none; 
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%230080a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>'); 
+    background-repeat: no-repeat; 
+    background-position: right 12px center; 
+    background-size: 16px; 
+}
 
 .hint-text {
     font-size: 13px;
@@ -171,18 +231,49 @@ select { appearance: none; background-image: url('data:image/svg+xml;utf8,<svg x
 .save-button {
     background-color: var(--color-aegean-blue);
     color: var(--color-pamukkale-white);
-    padding: 16px 24px; border: none; border-radius: 12px;
-    font-size: 1.1rem; font-weight: bold; cursor: pointer;
-    transition: all 0.2s ease; width: 100%;
-    position: sticky; bottom: 20px; z-index: 100;
+    padding: 16px 24px; 
+    border: none; 
+    border-radius: 12px;
+    font-size: 1.1rem; 
+    font-weight: bold; 
+    cursor: pointer;
+    transition: all 0.2s ease; 
+    width: 100%;
+    position: sticky; 
+    bottom: 20px; 
+    z-index: 100;
     box-shadow: 0 10px 25px rgba(0, 128, 168, 0.4);
 }
+
 .save-button:hover { background-color: #006686; transform: translateY(-2px); }
 .save-button:active { transform: translateY(0); }
 
-@media (max-width: 1024px) {
-    .input-row { grid-template-columns: 1fr; }
-    .traveler-header-row { display: none; }
-    .traveler-row { display: flex; flex-direction: column; }
-    .btn-remove-small { width: 100%; padding: 12px; }
+/* -------------------------------------------------------------------------
+   FIX: Raised from 1024px → 1200px.
+   iPad Air 11" in landscape is ~1194px — the 1024px breakpoint never fired
+   in that orientation. 1200px catches both portrait and landscape on iPad.
+------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+    .input-row { 
+        grid-template-columns: 1fr; 
+    }
+    .input-row > * {
+        min-width: 0;
+    }
+    .traveler-header-row { 
+        display: none; 
+    }
+    .traveler-row { 
+        display: flex; 
+        flex-direction: column;
+        gap: 10px;
+    }
+    .traveler-row > * {
+        min-width: 0;
+        width: 100%;
+    }
+    .btn-remove-small { 
+        width: 100%; 
+        padding: 12px; 
+    }
 }

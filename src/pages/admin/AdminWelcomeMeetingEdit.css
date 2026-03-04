@@ -39,12 +39,20 @@
     border-radius: 16px;
     border: none;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* No transition in base — added only for real pointer devices below */
 }
 
-.form-section:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+/* FIX: Guard the lift-on-hover with a pointer check.
+   On iPad, tapping an input triggers the hover state which stays "stuck",
+   shifting the section up and overlapping the one above. */
+@media (hover: hover) and (pointer: fine) {
+    .form-section {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-section:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    }
 }
 
 .form-section h3 {
@@ -64,6 +72,9 @@
 
 .dropdown-action-row {
     display: flex;
+    /* FIX: wrap so Delete button falls below select on narrow screens
+       instead of pushing the select to collapse and touch its own border */
+    flex-wrap: wrap;
     gap: 1rem;
     align-items: center;
     margin-bottom: 0.5rem;
@@ -71,6 +82,7 @@
 
 select {
     flex-grow: 1;
+    min-width: 200px;
     padding: 14px 16px;
     padding-right: 40px;
     border: 1px solid #d1d5db;
@@ -88,6 +100,9 @@ select {
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 16px;
+    box-sizing: border-box;
+    /* FIX: prevents Safari/iPad from overriding the flex column width */
+    min-width: 0;
 }
 
 select:focus {
@@ -107,6 +122,7 @@ select:focus {
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .btn-delete:hover {
@@ -120,6 +136,11 @@ select:focus {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
+}
+
+/* FIX: prevents inputs from overflowing their grid column on Safari/iPad */
+.input-row > * {
+    min-width: 0;
 }
 
 label {
@@ -147,6 +168,8 @@ textarea {
     transition: all 0.2s ease-in-out;
     font-family: inherit;
     outline: none;
+    box-sizing: border-box;
+    min-width: 0;
 }
 
 textarea {
@@ -173,7 +196,6 @@ textarea:focus {
     cursor: pointer;
     transition: all 0.2s ease;
     width: 100%;
-    
     position: sticky;
     bottom: 20px;
     z-index: 100;
@@ -201,11 +223,31 @@ textarea:focus {
     border-left: 3px solid var(--color-anatolian-sun);
 }
 
-@media (max-width: 1024px) {
-    .input-row, .dropdown-action-row {
-        flex-direction: column;
+/* -------------------------------------------------------------------------
+   FIX: Raised from 1024px → 1200px.
+   iPad Air 11" landscape viewport is ~1194px — the old 1024px breakpoint
+   never fired in landscape mode, leaving form fields side-by-side and
+   cramped. 1200px catches both portrait (~820px) and landscape (~1194px).
+------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+    .input-row {
         grid-template-columns: 1fr;
     }
-    .btn-delete { width: 100%; }
-    .form-section { padding: 1.5rem; }
+    .input-row > * {
+        min-width: 0;
+    }
+    .dropdown-action-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .btn-delete {
+        width: 100%;
+    }
+    .form-section {
+        padding: 1.5rem;
+    }
+    select {
+        min-width: 0;
+        width: 100%;
+    }
 }

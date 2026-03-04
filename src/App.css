@@ -10,19 +10,13 @@ html, body {
   overflow-x: hidden;
 }
 
-/* OVERRIDE VITE'S DEFAULT PADDING */
+/* OVERRIDE VITE'S DEFAULT PADDING — single clean rule */
 #root {
   max-width: 100% !important;
   padding: 0 !important;
   margin: 0 !important;
   width: 100%;
-}
-
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  /* Removed text-align: center — it was cascading into admin forms and misaligning content */
 }
 
 .logo {

@@ -1,7 +1,7 @@
 .admin-edit-wrapper {
     max-width: 900px;
     margin: 0 auto;
-    padding-bottom: 4rem; /* Extra space for the sticky button */
+    padding-bottom: 4rem;
     animation: fadeIn 0.4s ease-in-out;
 }
 
@@ -25,11 +25,10 @@
 
 /* --- THE NEW FLOATING LAYOUT --- */
 .edit-form-card {
-    /* Removed the white background and border to let sections float */
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    counter-reset: form-section-counter; /* Initializes the auto-numbering */
+    counter-reset: form-section-counter;
 }
 
 .form-section {
@@ -39,15 +38,21 @@
     background-color: var(--color-pamukkale-white);
     padding: 2rem;
     border-radius: 16px;
-    border: none; /* Removed harsh borders */
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04); /* Soft, modern shadow */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+    /* Removed transition from base — only used on true hover devices below */
 }
 
-/* Elevate the card slightly when the user hovers over it */
-.form-section:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+/* FIX: Only apply the lift transform on real pointer devices (mouse/trackpad).
+   On iPad (touch), hover states stick after a tap, pushing sections up and causing overlap. */
+@media (hover: hover) and (pointer: fine) {
+    .form-section {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-section:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    }
 }
 
 .form-section h3 {
@@ -55,7 +60,7 @@
     margin: 0 0 0.5rem 0;
     font-size: 1.4rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid #f1f5f9; /* Very soft subtle divider */
+    border-bottom: 2px solid #f1f5f9;
 }
 
 /* --- AUTO-NUMBERING --- */
@@ -68,6 +73,9 @@
 
 .dropdown-action-row {
     display: flex;
+    /* FIX: flex-wrap so the Delete button drops below on narrow screens
+       instead of squashing the select or overflowing the border */
+    flex-wrap: wrap;
     gap: 1rem;
     align-items: center;
     margin-bottom: 0.5rem;
@@ -75,6 +83,8 @@
 
 select {
     flex-grow: 1;
+    /* FIX: min-width prevents select from collapsing to 0 in a flex row */
+    min-width: 200px;
     padding: 14px 16px;
     padding-right: 40px;
     border: 1px solid #d1d5db;
@@ -92,6 +102,9 @@ select {
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 16px;
+    /* FIX: stops iOS/iPadOS from auto-resizing the select wider than its column */
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 select:focus {
@@ -101,7 +114,7 @@ select:focus {
 }
 
 .btn-delete {
-    background-color: #fff0f0; /* Soft red background */
+    background-color: #fff0f0;
     color: var(--color-terracotta);
     padding: 14px 20px;
     border: 1px solid rgba(255, 102, 99, 0.3);
@@ -111,6 +124,8 @@ select:focus {
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
+    /* FIX: flex-shrink 0 keeps button from shrinking into its border */
+    flex-shrink: 0;
 }
 
 .btn-delete:hover {
@@ -124,6 +139,11 @@ select:focus {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
+}
+
+/* FIX: min-width:0 on grid children prevents inputs from bursting out of columns on Safari/iPad */
+.input-row > * {
+    min-width: 0;
 }
 
 label {
@@ -148,6 +168,9 @@ textarea {
     transition: all 0.2s ease-in-out;
     font-family: inherit;
     outline: none;
+    /* FIX: box-sizing ensures padding is included inside the 100% width */
+    box-sizing: border-box;
+    min-width: 0;
 }
 
 textarea {
@@ -163,7 +186,7 @@ textarea:focus {
     background-color: var(--color-pamukkale-white);
 }
 
-/* --- STICKY ACTION BAR --- */
+/* --- STICKY SAVE BUTTON --- */
 .save-button {
     background-color: var(--color-aegean-blue);
     color: var(--color-pamukkale-white);
@@ -175,13 +198,9 @@ textarea:focus {
     cursor: pointer;
     transition: all 0.2s ease;
     width: 100%;
-    
-    /* Makes the button stick to the bottom of the screen */
     position: sticky;
     bottom: 20px;
     z-index: 100;
-    
-    /* A stronger shadow so it looks like it is floating above content */
     box-shadow: 0 10px 25px rgba(0, 128, 168, 0.4);
 }
 
@@ -194,11 +213,28 @@ textarea:focus {
     transform: translateY(0);
 }
 
-@media (max-width: 1024px) {
-    .input-row, .dropdown-action-row {
-        flex-direction: column;
+/* -------------------------------------------------------------------------
+   FIX: Raised breakpoint from 1024px → 1200px.
+   iPad Air 11" in landscape is ~1194px wide — the old 1024px breakpoint
+   never fired in landscape, leaving two-column inputs side-by-side in a
+   space too narrow for them, causing the overlap you were seeing.
+------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+    .input-row {
         grid-template-columns: 1fr;
     }
-    .btn-delete { width: 100%; }
-    .form-section { padding: 1.5rem; }
+    .dropdown-action-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .btn-delete {
+        width: 100%;
+    }
+    .form-section {
+        padding: 1.5rem;
+    }
+    select {
+        min-width: 0;
+        width: 100%;
+    }
 }
