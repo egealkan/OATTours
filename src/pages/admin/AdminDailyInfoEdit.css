@@ -257,7 +257,7 @@ input[type="text"], input[type="time"], input[type="date"], select {
 input:focus, select:focus { border-color: var(--color-aegean-blue); box-shadow: 0 0 0 3px rgba(0, 128, 168, 0.15); background-color: var(--color-pamukkale-white); }
 select { appearance: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%230080a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>'); background-repeat: no-repeat; background-position: right 12px center; background-size: 16px; }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .input-row, .traveler-row, .place-edit-row { grid-template-columns: 1fr; }
     .traveler-header-row { display: none; }
     .traveler-row { display: flex; flex-direction: column; }

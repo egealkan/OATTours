@@ -201,7 +201,7 @@ textarea:focus {
     border-left: 3px solid var(--color-anatolian-sun);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .input-row, .dropdown-action-row {
         flex-direction: column;
         grid-template-columns: 1fr;

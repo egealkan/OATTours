@@ -180,7 +180,7 @@ select { appearance: none; background-image: url('data:image/svg+xml;utf8,<svg x
 .save-button:hover { background-color: #006686; transform: translateY(-2px); }
 .save-button:active { transform: translateY(0); }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .input-row { grid-template-columns: 1fr; }
     .traveler-header-row { display: none; }
     .traveler-row { display: flex; flex-direction: column; }
