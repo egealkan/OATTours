@@ -410,3 +410,15 @@
     color: var(--color-aegean-blue);
     font-weight: bold;
 }
+
+@media screen and (max-width: 600px) {
+    /* Shrink the outer page margins so the cards stretch wider */
+    .guest-page-wrapper {
+        padding: 10px; 
+    }
+    
+    /* Slightly reduce the inner spacing of the cards to give text more breathing room */
+    .info-card {
+        padding: 15px; 
+    }
+}
