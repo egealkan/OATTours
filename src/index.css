@@ -70,3 +70,42 @@ input[type="time"] {
     min-width: 0;
     overflow: hidden;
 }
+
+
+/* --- PRINT STYLES FOR PDF EXPORT --- */
+@media print {
+  /* Hide all buttons, navigation, and overlays during PDF generation */
+  .no-print, nav, footer, .btn-back, .btn-back-bottom, .btn-print, .btn-open-modal, .btn-close-modal {
+    display: none !important;
+  }
+
+  body {
+    background-color: var(--color-pamukkale-white);
+    color: var(--color-dark-slate);
+  }
+
+  /* Prevent page breaks inside important containers */
+  .info-card, .traveler-list-row, .schedule-category, .place-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #e2e8f0 !important;
+  }
+
+  /* If printing a modal (like the departure list), strip the overlay constraints */
+  .modal-overlay {
+    position: static;
+    background: none;
+    padding: 0;
+  }
+  
+  .modal-container {
+    max-height: none;
+    overflow: visible;
+    box-shadow: none;
+  }
+
+  .modal-body {
+    overflow: visible;
+  }
+}

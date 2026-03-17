@@ -209,9 +209,14 @@ export default function GuestFarewellPage() {
       {isTravelerModalOpen && (
         <div className="modal-overlay" onClick={() => setIsTravelerModalOpen(false)}>
           <div className="modal-container modal-large" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
+          <div className="modal-header">
               <h2>✈️ Traveler Departure Times</h2>
-              <button className="btn-close-modal" onClick={() => setIsTravelerModalOpen(false)}>&times;</button>
+              <div className="modal-header-actions no-print">
+                <button className="btn-print" onClick={() => window.print()}>
+                  📄 Save to PDF
+                </button>
+                <button className="btn-close-modal" onClick={() => setIsTravelerModalOpen(false)}>&times;</button>
+              </div>
             </div>
             <div className="modal-body">
               {travelers.length > 0 ? (

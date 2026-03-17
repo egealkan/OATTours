@@ -139,9 +139,14 @@ export default function GuestDailyToursPage() {
       return (
         
           <div className="guest-page-wrapper slide-in">
-              <button className="btn-back" onClick={() => setSelectedDayIndex(null)}>
-                  &larr; Back to Itinerary
-              </button>
+              <div className="detail-controls no-print">
+                  <button className="btn-back" onClick={() => setSelectedDayIndex(null)}>
+                      &larr; Back to Itinerary
+                  </button>
+                  <button className="btn-print" onClick={() => window.print()}>
+                      📄 Save Day as PDF
+                  </button>
+              </div>
 
               <div className="day-detail-header">
                   {isToday(day.date) && <div className="today-header-badge">⭐ TODAY'S ITINERARY</div>}
@@ -270,6 +275,12 @@ export default function GuestDailyToursPage() {
                       </div>
                   </div>
               )}
+              {/* Bottom Back Button */}
+              <div className="detail-controls-bottom no-print">
+                  <button className="btn-back-bottom" onClick={() => setSelectedDayIndex(null)}>
+                      &larr; Back to Itinerary
+                  </button>
+              </div>
           </div>
       );
   }

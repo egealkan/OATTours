@@ -401,3 +401,45 @@
         padding: 10px; 
     }
 }
+
+
+
+
+/* --- MODAL HEADER ACTIONS & PRINT BUTTON --- */
+.modal-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-print {
+    background-color: var(--color-aegean-blue);
+    color: var(--color-pamukkale-white);
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-print:hover {
+    background-color: var(--color-anatolian-sun);
+    color: var(--color-dark-slate);
+    transform: translateY(-2px);
+}
+
+/* Adjust title size on mobile to fit the new button */
+@media screen and (max-width: 600px) {
+    .modal-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .btn-print {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+}

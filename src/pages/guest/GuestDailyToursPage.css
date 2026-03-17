@@ -422,3 +422,72 @@
         padding: 10px; 
     }
 }
+
+
+
+
+
+/* --- DETAIL CONTROLS & PRINT BUTTONS --- */
+.detail-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.detail-controls .btn-back {
+    margin-bottom: 0; /* Overrides the 25px margin from original class */
+}
+
+.btn-print {
+    background-color: var(--color-aegean-blue);
+    color: var(--color-pamukkale-white);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 128, 168, 0.2);
+}
+
+.btn-print:hover {
+    background-color: var(--color-anatolian-sun);
+    color: var(--color-dark-slate);
+    transform: translateY(-2px);
+}
+
+.detail-controls-bottom {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.btn-back-bottom {
+    background-color: var(--color-terracotta);
+    color: var(--color-pamukkale-white);
+    border: none;
+    padding: 14px 30px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    max-width: 320px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(255, 102, 99, 0.2);
+}
+
+.btn-back-bottom:hover {
+    background-color: #e55a57;
+    transform: translateY(-2px);
+}
