@@ -443,3 +443,40 @@
         font-size: 0.85rem;
     }
 }
+
+
+
+
+/* --- FIX: PRINT ONLY THE MODAL --- */
+@media print {
+    /* 1. Hide all background cards and headers so they don't overlap or cause extra pages */
+    .print-modal-only > *:not(.modal-overlay) {
+        display: none !important;
+    }
+
+    /* 2. Strip the dark overlay and position the modal normally at the top of the PDF */
+    .print-modal-only .modal-overlay {
+        position: relative !important;
+        background: none !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+
+    /* 3. Remove shadows, rounded corners, and height limits so it looks like a clean document */
+    .print-modal-only .modal-container {
+        max-width: 100% !important;
+        width: 100% !important;
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        max-height: none !important;
+    }
+
+    /* 4. Allow the list to flow onto a second page if you have a massive group */
+    .print-modal-only .modal-body {
+        overflow: visible !important;
+        max-height: none !important;
+        padding: 10px 0 !important;
+    }
+}

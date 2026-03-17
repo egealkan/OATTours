@@ -107,7 +107,7 @@ export default function GuestFarewellPage() {
   }
 
   return (
-    <div className="guest-page-wrapper">
+    <div className={`guest-page-wrapper ${isTravelerModalOpen ? 'print-modal-only' : ''}`}>
       <div className="guest-header">
         <h1>Farewell & Wrap-Up</h1>
         <p>As our journey comes to an end, here is everything you need for our final day together.</p>
