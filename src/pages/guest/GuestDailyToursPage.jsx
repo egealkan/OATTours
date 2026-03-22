@@ -14,6 +14,8 @@ export default function GuestDailyToursPage() {
   const [liveWeather, setLiveWeather] = useState(null);
   const [weatherLoading, setWeatherLoading] = useState(false);
 
+  const [selectedPhoto, setSelectedPhoto] = useState(null); // { url, caption }
+  
   useEffect(() => {
     fetchItineraryData();
   }, []);
@@ -213,10 +215,16 @@ export default function GuestDailyToursPage() {
                           {placesForDay.map(place => (
                               <div key={place.id} className="place-card">
                                   {place.image_url ? (
-                                      <img src={place.image_url} alt={place.place_name} className="place-image" />
-                                  ) : (
-                                      <div className="place-image-placeholder">🏛️</div>
-                                  )}
+                                        <img
+                                            src={place.image_url}
+                                            alt={place.place_name}
+                                            className="place-image guide-avatar-clickable"
+                                            onClick={() => setSelectedPhoto({ url: place.image_url, caption: place.place_name })}
+                                            title="Tap to enlarge"
+                                        />
+                                    ) : (
+                                        <div className="place-image-placeholder">🏛️</div>
+                                    )}
                                   <h3 className="place-name">{place.place_name}</h3>
                               </div>
                           ))}
@@ -281,6 +289,16 @@ export default function GuestDailyToursPage() {
                       &larr; Back to Itinerary
                   </button>
               </div>
+              {/* Photo Lightbox Modal */}
+                {selectedPhoto && (
+                    <div className="modal-overlay" onClick={() => setSelectedPhoto(null)}>
+                        <div className="photo-modal-container" onClick={e => e.stopPropagation()}>
+                            <button className="photo-modal-close" onClick={() => setSelectedPhoto(null)}>&times;</button>
+                            <img src={selectedPhoto.url} alt={selectedPhoto.caption} className="photo-modal-img" />
+                            {selectedPhoto.caption && <p className="photo-modal-caption">{selectedPhoto.caption}</p>}
+                        </div>
+                    </div>
+                )}
           </div>
       );
   }
