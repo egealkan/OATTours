@@ -99,15 +99,15 @@ export default function GuestDailyToursPage() {
 
   const formatUSDate = (dateString) => {
     if (!dateString) return 'Date TBA';
-    const date = new Date(dateString);
+    const date = new Date(dateString + 'T12:00:00');
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   };
 
   // Helper to check if a day is today
   const isToday = (dateString) => {
-      if (!dateString) return false;
-      const today = new Date();
-      const checkDate = new Date(dateString);
+    if (!dateString) return false;
+    const today = new Date();
+    const checkDate = new Date(dateString + 'T12:00:00'); // add this
       return today.getDate() === checkDate.getDate() && 
              today.getMonth() === checkDate.getMonth() && 
              today.getFullYear() === checkDate.getFullYear();

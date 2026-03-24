@@ -411,8 +411,8 @@ export default function GuestWelcomeMeetingPage() {
   }, [isBioModalOpen, isHotelModalOpen, isPlacesModalOpen, isPhotoModalOpen]);
 
   const formatUSDate = (dateString) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
+    if (!dateString) return 'Date TBA';
+    const date = new Date(dateString + 'T12:00:00');
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   };
 
