@@ -480,3 +480,93 @@
         padding: 10px 0 !important;
     }
 }
+
+
+
+
+
+
+
+/* --- FAREWELL PRINT BUTTON --- */
+.farewell-print-bar {
+    display: flex;
+    justify-content: center; /* Changed from flex-end to center */
+    margin-bottom: 20px;
+    width: 100%; /* Ensures the flex container spans the full width */
+}
+
+.btn-print-farewell {
+    background-color: var(--color-aegean-blue);
+    color: var(--color-pamukkale-white);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(0, 128, 168, 0.2);
+}
+
+.btn-print-farewell:hover {
+    background-color: var(--color-anatolian-sun);
+    color: var(--color-dark-slate);
+    transform: translateY(-2px);
+}
+
+/* --- PLACES PRINT LIST (hidden normally, shown when printing) --- */
+.places-print-list {
+    display: none;
+}
+
+.place-print-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-dark-slate);
+    text-align: left;
+}
+
+.place-print-item:last-child {
+    border-bottom: none;
+}
+
+.place-print-dot {
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+/* --- FAREWELL PAGE PRINT STYLES --- */
+@media print {
+    /* Show the inline places list */
+    .places-print-list {
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+    /* Remove card shadow/border for clean print look */
+    .info-card {
+        box-shadow: none !important;
+        border: 1px solid #e2e8f0 !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    /* Remove the left colored border that wastes ink */
+    .info-card {
+        border-left: 3px solid var(--color-terracotta) !important;
+    }
+
+    /* Ensure page backgrounds are white */
+    .guest-page-wrapper {
+        padding: 10px !important;
+    }
+}

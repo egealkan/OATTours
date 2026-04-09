@@ -113,8 +113,15 @@ export default function GuestFarewellPage() {
         <p>As our journey comes to an end, here is everything you need for our final day together.</p>
       </div>
 
+      {/* Print Button */}
+      <div className="farewell-print-bar no-print">
+        <button className="btn-print-farewell" onClick={() => window.print()}>
+          📄 Save as PDF
+        </button>
+      </div>
+
       {/* Departure Logistics Card (Modal Trigger) */}
-      <div className="info-card center-card">
+      <div className="info-card center-card no-print">
         <h2>✈️ Departure Logistics</h2>
         <p className="card-summary-text">
           Please review your final airport transfer and flight times below so you are ready for departure.
@@ -166,15 +173,24 @@ export default function GuestFarewellPage() {
       {/* Places Explored (Modal Trigger) */}
       <div className="info-card center-card">
         <h2>🗺️ Places We Explored</h2>
-        <p className="card-summary-text">
+        <p className="card-summary-text no-print">
           Take a look back at the beautiful destinations and historic sites we visited on this journey.
         </p>
         <button 
-          className="btn-open-modal"
+          className="btn-open-modal no-print"
           onClick={() => setIsPlacesModalOpen(true)}
         >
           View Places Explored
         </button>
+        {/* Names-only list shown only when printing */}
+        <div className="places-print-list">
+          {itinerarySummary.map((place, index) => (
+            <div key={index} className="place-print-item">
+              <span className="place-print-dot">📍</span>
+              {place.place_name}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Goodbye Message */}
