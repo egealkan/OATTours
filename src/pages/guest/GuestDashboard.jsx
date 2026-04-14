@@ -10,6 +10,7 @@ const GuestDashboard = () => {
     { id: 'welcome-meeting', title: 'Welcome Meeting', icon: '🤝', path: '/welcome-meeting' },
     { id: 'daily-itinerary', title: 'Today\'s Itinerary', icon: '📍', path: '/daily-info' },
     { id: 'farewell', title: 'Farewell', icon: '👋', path: '/farewell' },
+    { id: 'post-trip', title: 'Post Trip', icon: '➕', path: '/post-trip' },
   ];
 
   return (

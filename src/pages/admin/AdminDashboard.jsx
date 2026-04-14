@@ -149,6 +149,15 @@ const AdminDashboard = () => {
                                 <span>Schedule & View All Tour Dates</span>
                             </div>
                         </Link>
+
+
+                        <Link to="/admin/edit-post-trip" className="dashboard-link">
+                            <span className="link-icon">➕</span>
+                            <div className="link-text">
+                                <strong>Post Trip</strong>
+                                <span>Day-by-Day Post Trip</span>
+                            </div>
+                        </Link>
                     </div>
                 </div>
 
