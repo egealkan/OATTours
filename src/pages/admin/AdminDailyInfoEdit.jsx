@@ -431,6 +431,12 @@ const AdminDailyInfoEdit = () => {
     const [confirmConfig, setConfirmConfig] = useState({
         isOpen: false, title: '', message: '', onConfirm: () => {}
     });
+    const [mapLinks, setMapLinks] = useState([]);
+    const [newMapName, setNewMapName] = useState('');
+    const [newMapUrl, setNewMapUrl] = useState('');
+
+    const [editingMapId, setEditingMapId] = useState(null);
+    const [editMapData, setEditMapData] = useState({ name: '', embed_url: '' });
 
     useEffect(() => { fetchAllData(); }, []);
 
@@ -458,6 +464,9 @@ const AdminDailyInfoEdit = () => {
 
             const { data: tourTravelers } = await supabase.from('travelers').select('*').eq('tour_id', activeTour.id);
             if (tourTravelers) setTravelers(tourTravelers);
+
+            const { data: maps } = await supabase.from('map_links').select('*').order('name');
+            if (maps) setMapLinks(maps);
 
         } catch (error) {
             toast.error("Error loading database information.");
@@ -634,6 +643,72 @@ const AdminDailyInfoEdit = () => {
         }
     };
 
+    const handleAddMapLink = async () => {
+        if (!newMapName.trim() || !newMapUrl.trim()) {
+            toast.error('Please provide both a name and a URL.');
+            return;
+        }
+        const { data, error } = await supabase
+            .from('map_links')
+            .insert([{ name: newMapName.trim(), embed_url: newMapUrl.trim() }])
+            .select()
+            .single();
+        if (error) { toast.error('Failed to add map link.'); return; }
+        setMapLinks(prev => [...prev, data].sort((a, b) => a.name.localeCompare(b.name)));
+        setNewMapName('');
+        setNewMapUrl('');
+        toast.success('Map link added!');
+    };
+    
+    const handleDeleteMapLink = (mapId, mapName) => {
+        setConfirmConfig({
+            isOpen: true,
+            title: 'Delete Map Link?',
+            message: `Are you sure you want to delete "${mapName}" from the library?`,
+            onConfirm: async () => {
+                const { error } = await supabase.from('map_links').delete().eq('id', mapId);
+                if (error) { toast.error('Failed to delete.'); return; }
+                setMapLinks(prev => prev.filter(m => m.id !== mapId));
+                toast.success('Map link deleted.');
+            }
+        });
+    };
+
+    const handleStartEditMap = (map) => {
+        setEditingMapId(map.id);
+        setEditMapData({ name: map.name, embed_url: map.embed_url });
+    };
+
+    const handleCancelEditMap = () => {
+        setEditingMapId(null);
+        setEditMapData({ name: '', embed_url: '' });
+    };
+
+    const handleSaveEditMap = async () => {
+        if (!editMapData.name.trim() || !editMapData.embed_url.trim()) {
+            toast.error('Name and URL cannot be empty.');
+            return;
+        }
+        
+        const toastId = toast.loading('Saving map...');
+        const { error } = await supabase
+            .from('map_links')
+            .update({ name: editMapData.name.trim(), embed_url: editMapData.embed_url.trim() })
+            .eq('id', editingMapId);
+
+        if (error) {
+            toast.error('Failed to update map.', { id: toastId });
+            return;
+        }
+
+        setMapLinks(prev => prev.map(m => 
+            m.id === editingMapId ? { ...m, name: editMapData.name.trim(), embed_url: editMapData.embed_url.trim() } : m
+        ));
+        
+        toast.success('Map updated!', { id: toastId });
+        setEditingMapId(null);
+    };
+
     if (isLoading) return <div style={{ textAlign: 'center', marginTop: '10vh' }}>Loading Form...</div>;
 
     return (
@@ -701,6 +776,97 @@ const AdminDailyInfoEdit = () => {
                 </button>
             </form>
 
+
+
+            {/* MAP LIBRARY */}
+            <div className="edit-form-card" style={{ marginTop: '2rem' }}>
+                <div className="form-section">
+                    <h3>Map Library</h3>
+                    <p className="hint-text">
+                        Save your Google My Maps embed URLs here once. When editing a day, select the right map from the dropdown instead of pasting the URL each time.
+                    </p>
+
+                    {mapLinks.length > 0 && (
+                        <div className="map-links-list">
+                            {mapLinks.map(map => (
+                                <div key={map.id} className="map-link-row map-list-item">
+                                    {editingMapId === map.id ? (
+                                        <div className="map-edit-mode">
+                                            <input
+                                                type="text"
+                                                value={editMapData.name}
+                                                onChange={(e) => setEditMapData({ ...editMapData, name: e.target.value })}
+                                                placeholder="Map Name"
+                                            />
+                                            <input
+                                                type="text"
+                                                value={editMapData.embed_url}
+                                                onChange={(e) => setEditMapData({ ...editMapData, embed_url: e.target.value })}
+                                                placeholder="Embed URL"
+                                            />
+                                            <div className="map-edit-actions">
+                                                <button type="button" className="btn-add-secondary inline-btn" onClick={handleSaveEditMap}>Save</button>
+                                                <button type="button" className="btn-danger-modal inline-btn" onClick={handleCancelEditMap}>Cancel</button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <div className="map-text-container">
+                                                <span className="map-link-name">🗺️ {map.name}</span>
+                                                <span className="map-link-preview">{map.embed_url}</span>
+                                            </div>
+                                            <div className="map-action-buttons">
+                                                <button
+                                                    type="button"
+                                                    className="edit-card-btn inline-btn"
+                                                    onClick={() => handleStartEditMap(map)}
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="btn-remove-small inline-btn"
+                                                    onClick={() => handleDeleteMapLink(map.id, map.name)}
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    <div className="input-row" style={{ marginTop: mapLinks.length > 0 ? '1.5rem' : '0' }}>
+                        <div>
+                            <label>Map Name</label>
+                            <input
+                                type="text"
+                                placeholder="e.g. Istanbul Day Route"
+                                value={newMapName}
+                                onChange={e => setNewMapName(e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label>Embed URL</label>
+                            <input
+                                type="text"
+                                placeholder="https://www.google.com/maps/d/embed?..."
+                                value={newMapUrl}
+                                onChange={e => setNewMapUrl(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <button type="button" className="btn-add-secondary" onClick={handleAddMapLink}>
+                        + Add to Map Library
+                    </button>
+                </div>
+            </div>
+
+
+            
+
             {/* EDIT DAY MODAL */}
             {isModalOpen && (
                 <div className="modal-overlay" onClick={closeDayModal}>
@@ -719,7 +885,23 @@ const AdminDailyInfoEdit = () => {
                                 <div><label>Date of this Day</label><input type="date" value={editingDay.date} onChange={e => handleDayFieldChange('date', e.target.value)} /></div>
                                     <div><label>City (For Weather API)</label><input type="text" placeholder="e.g. Istanbul" value={editingDay.weather_city_name} onChange={e => handleDayFieldChange('weather_city_name', e.target.value)} /></div>
                                 </div>
-                                <div style={{ marginTop: '1rem' }}><label>Google My Maps Embed URL</label><input type="text" value={editingDay.route_map_embed_url} onChange={e => handleDayFieldChange('route_map_embed_url', e.target.value)} /></div>
+                                <div style={{ marginTop: '1rem' }}>
+                                    <label>Route Map</label>
+                                    <select
+                                        value={editingDay.route_map_embed_url || ''}
+                                        onChange={e => handleDayFieldChange('route_map_embed_url', e.target.value)}
+                                    >
+                                        <option value="">-- No Map --</option>
+                                        {mapLinks.map(m => (
+                                            <option key={m.id} value={m.embed_url}>{m.name}</option>
+                                        ))}
+                                    </select>
+                                    {mapLinks.length === 0 && (
+                                        <p style={{ fontSize: '0.85rem', color: '#6b7280', marginTop: '6px', fontStyle: 'italic' }}>
+                                            No maps in library yet — add them in the Map Library section below.
+                                        </p>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="form-section">

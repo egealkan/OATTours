@@ -315,3 +315,95 @@ select {
 
     .modal-content { width: 95%; }
 }
+
+
+
+/* --- MAP LIBRARY --- */
+.map-links-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.map-link-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8fafc;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #eaeaea;
+    gap: 15px;
+}
+
+.map-link-name {
+    font-weight: 600;
+    color: var(--color-dark-slate);
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.95rem;
+}
+
+
+/* --- Map Inline Editing Styles --- */
+.map-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.map-text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+    min-width: 0; /* Prevents long URLs from pushing layout */
+}
+
+.map-link-preview {
+    font-size: 0.75rem;
+    color: #888;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.map-action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.map-edit-mode {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.map-edit-mode input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.map-edit-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.inline-btn {
+    width: auto !important;
+    padding: 6px 12px !important;
+    margin: 0 !important;
+    font-size: 0.85rem;
+}
