@@ -1,0 +1,317 @@
+/* -------------------------------------------------------------------------
+   CRITICAL LAYOUT FIX: Forces Apple Devices to obey grid calculations
+   and stops text boxes from expanding past their columns.
+------------------------------------------------------------------------- */
+.admin-edit-wrapper *,
+.modal-overlay *,
+.admin-edit-wrapper *::before,
+.admin-edit-wrapper *::after {
+    box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------------------- */
+
+.admin-edit-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-bottom: 4rem;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.admin-edit-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+}
+
+.admin-edit-header h1 {
+    color: var(--color-aegean-blue);
+    margin: 0 0 0.5rem 0;
+    font-size: 2.2rem;
+}
+
+.admin-edit-header p {
+    color: var(--color-dark-slate);
+    margin: 0;
+    opacity: 0.8;
+    font-size: 1.1rem;
+}
+
+/* --- GRID FOR DAY CARDS --- */
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.day-card {
+    background-color: var(--color-pamukkale-white);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 2px solid transparent;
+}
+
+.day-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(255, 213, 46, 0.15);
+    border-color: rgba(255, 213, 46, 0.4);
+}
+
+/* Post-trip accent: anatolian sun instead of terracotta */
+.post-trip-card {
+    border-top: 4px solid var(--color-anatolian-sun);
+}
+
+.day-card h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--color-aegean-blue);
+    font-size: 1.2rem;
+}
+
+.day-card .day-date {
+    font-weight: bold;
+    color: var(--color-dark-slate);
+    margin-bottom: 0.5rem;
+}
+
+.day-card p {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+.edit-card-btn {
+    background-color: #fefce8;
+    color: #92400e;
+    border: 1px solid rgba(255, 213, 46, 0.4);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.edit-card-btn:hover {
+    background-color: var(--color-anatolian-sun);
+}
+
+.day-card.create-new {
+    border: 2px dashed #cbd5e1;
+    background-color: transparent;
+    justify-content: center;
+    color: var(--color-aegean-blue);
+}
+
+.day-card.create-new h3 {
+    font-size: 3rem;
+    color: var(--color-anatolian-sun);
+    margin-bottom: 0;
+}
+
+.day-card.create-new:hover {
+    background-color: rgba(255, 213, 46, 0.1);
+    border-color: var(--color-anatolian-sun);
+}
+
+/* --- REUSABLE FORM SECTION --- */
+.edit-form-card { display: flex; flex-direction: column; gap: 2rem; }
+
+.form-section {
+    display: flex; flex-direction: column; gap: 1.2rem;
+    background-color: var(--color-pamukkale-white);
+    padding: 2rem; border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.form-section h3 {
+    color: var(--color-aegean-blue);
+    margin: 0 0 0.5rem 0; font-size: 1.4rem;
+    padding-bottom: 0.5rem; border-bottom: 2px solid #f1f5f9;
+}
+
+/* --- MODAL STYLES --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.modal-content {
+    background-color: #f1f5f9;
+    width: 90%; max-width: 800px;
+    height: 90vh;
+    border-radius: 16px;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    background-color: var(--color-pamukkale-white);
+    padding: 20px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 2px solid #e2e8f0;
+    /* Post-trip accent on modal header */
+    border-top: 4px solid var(--color-anatolian-sun);
+    z-index: 10;
+}
+
+.modal-header h2 { margin: 0; color: var(--color-aegean-blue); }
+
+.close-modal {
+    background: none; border: none; font-size: 2rem;
+    color: #94a3b8; cursor: pointer; transition: color 0.2s;
+}
+.close-modal:hover { color: var(--color-anatolian-sun); }
+
+.modal-form-body {
+    padding: 24px;
+    overflow-y: auto;
+    display: flex; flex-direction: column; gap: 1.5rem;
+    flex-grow: 1;
+}
+
+.place-edit-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #f8fafc;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #eaeaea;
+    margin-bottom: 10px;
+}
+
+.place-edit-name-row {
+    display: grid;
+    grid-template-columns: 1fr 40px;
+    gap: 10px;
+    align-items: center;
+}
+
+.place-edit-name-row > * {
+    min-width: 0;
+}
+
+.modal-action-bar {
+    position: sticky; bottom: -24px; left: 0; width: 100%;
+    background-color: var(--color-pamukkale-white);
+    padding: 16px 24px; margin-left: -24px; width: calc(100% + 48px);
+    border-top: 1px solid #e2e8f0;
+    display: flex; justify-content: space-between; gap: 16px;
+    box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
+}
+
+.save-button, .save-button-modal {
+    background-color: var(--color-aegean-blue);
+    color: var(--color-pamukkale-white);
+    padding: 16px 24px; border: none; border-radius: 12px;
+    font-size: 1.1rem; font-weight: bold; cursor: pointer;
+    flex-grow: 1; transition: all 0.2s;
+}
+.save-button:hover, .save-button-modal:hover { background-color: #006686; transform: translateY(-2px); }
+
+.btn-danger-modal {
+    background-color: #fff0f0; color: var(--color-terracotta);
+    padding: 16px 24px; border: 1px solid rgba(255, 102, 99, 0.3);
+    border-radius: 12px; font-weight: bold; cursor: pointer;
+}
+.btn-danger-modal:hover { background-color: var(--color-terracotta); color: white; }
+
+/* --- SECONDARY BUTTONS --- */
+.btn-add-secondary {
+    background-color: transparent;
+    color: var(--color-aegean-blue);
+    border: 2px dashed var(--color-aegean-blue);
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s;
+}
+.btn-add-secondary:hover { background-color: rgba(0, 128, 168, 0.05); }
+
+.btn-remove-small {
+    background-color: #fee2e2;
+    color: var(--color-terracotta);
+    border: none;
+    height: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.btn-remove-small:hover { background-color: var(--color-terracotta); color: white; }
+
+/* --- INPUT STYLES --- */
+.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+label { 
+    color: var(--color-dark-slate); font-weight: 600; font-size: 14px; 
+    margin-bottom: 8px; display: block; opacity: 0.9; 
+}
+
+input[type="text"], input[type="time"], input[type="date"], select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 16px;
+    color: var(--color-dark-slate);
+    background-color: #f9fafb;
+    outline: none;
+    transition: all 0.2s;
+    min-width: 0;
+}
+
+input:focus, select:focus { 
+    border-color: var(--color-aegean-blue); 
+    box-shadow: 0 0 0 3px rgba(0, 128, 168, 0.15); 
+    background-color: var(--color-pamukkale-white); 
+}
+
+select { 
+    appearance: none; 
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%230080a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>'); 
+    background-repeat: no-repeat; 
+    background-position: right 12px center; 
+    background-size: 16px; 
+}
+
+/* --- ANIMATIONS --- */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* --- MEDIA QUERIES --- */
+@media (max-width: 1100px) {
+    .input-row { grid-template-columns: 1fr; }
+
+    .place-edit-block {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background-color: #f8fafc;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #eaeaea;
+    }
+
+    .btn-remove-small {
+        width: 100%;
+        padding: 14px;
+    }
+
+    .modal-content { width: 95%; }
+}

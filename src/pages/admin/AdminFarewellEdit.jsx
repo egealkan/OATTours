@@ -58,7 +58,7 @@ const AdminFarewellEdit = () => {
                 if (tourTravelers) setTravelers(tourTravelers);
 
                 // 3. Auto-Generate Itinerary Summary (Fetch days, then fetch places)
-                const { data: days } = await supabase.from('tour_days').select('id').eq('tour_id', activeTour.id);
+                const { data: days } = await supabase.from('tour_days').select('id').eq('tour_id', activeTour.id).eq('is_post_trip', false);
                 if (days && days.length > 0) {
                     const dayIds = days.map(d => d.id);
                     const { data: places } = await supabase.from('daily_places').select('place_name').in('tour_day_id', dayIds);

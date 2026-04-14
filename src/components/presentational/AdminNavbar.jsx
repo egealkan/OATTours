@@ -28,7 +28,7 @@ const AdminNavbar = () => {
                 
                 <div className="navbar-brand">
                     <NavLink to="/admin" className="navbar-title" onClick={closeMenu} end>
-                        Tour Management Hub
+                        Admin
                     </NavLink>
                     
                     {/* Hamburger Button (Only visible on mobile) */}
@@ -61,6 +61,9 @@ const AdminNavbar = () => {
                         </NavLink>
                         <NavLink to="/admin/calendar" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} onClick={closeMenu}>
                             Calendar
+                        </NavLink>
+                        <NavLink to="/admin/edit-post-trip" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} onClick={closeMenu}>
+                            Post Trip
                         </NavLink>
                     </div>
 

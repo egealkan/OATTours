@@ -51,6 +51,9 @@ const GuestNavbar = () => {
                         <NavLink to="/farewell" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} onClick={closeMenu}>
                             Farewell
                         </NavLink>
+                        <NavLink to="/post-trip" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"} onClick={closeMenu}>
+                            Post Trip
+                        </NavLink>
                     </div>
                 </div>
 

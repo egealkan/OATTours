@@ -22,6 +22,7 @@ const GuestWelcomePage = React.lazy(() => import('./pages/guest/GuestWelcomePage
 const GuestWelcomeMeetingPage = React.lazy(() => import('./pages/guest/GuestWelcomeMeetingPage'));
 const GuestDailyToursPage = React.lazy(() => import('./pages/guest/GuestDailyToursPage'));
 const GuestFarewellPage = React.lazy(() => import('./pages/guest/GuestFarewellPage'));
+const GuestPostTripPage = React.lazy(() => import('./pages/guest/GuestPostTripPage'));
 
 // Admin Pages
 const AdminLogin = React.lazy(() => import('./pages/admin/AdminLogin'));
@@ -31,6 +32,7 @@ const AdminWelcomeMeetingEdit = React.lazy(() => import('./pages/admin/AdminWelc
 const AdminDailyInfoEdit = React.lazy(() => import('./pages/admin/AdminDailyInfoEdit'));
 const AdminFarewellEdit = React.lazy(() => import('./pages/admin/AdminFarewellEdit'));
 const AdminCalendar = React.lazy(() => import('./pages/admin/AdminCalendar'));
+const AdminPostTripEdit = React.lazy(() => import('./pages/admin/AdminPostTripEdit'));
 
 // Fallback UI
 const LoadingFallback = () => (
@@ -59,6 +61,7 @@ function App() {
             <Route path="welcome-meeting" element={<GuestWelcomeMeetingPage />} />
             <Route path="daily-info" element={<GuestDailyToursPage />} />
             <Route path="farewell" element={<GuestFarewellPage />} />
+            <Route path="post-trip" element={<GuestPostTripPage />} />
           </Route>
 
 
@@ -73,6 +76,7 @@ function App() {
             <Route path="edit-daily-info" element={<AdminDailyInfoEdit />} />
             <Route path="edit-farewell" element={<AdminFarewellEdit />} />
             <Route path="calendar" element={<AdminCalendar />} />
+            <Route path="edit-post-trip" element={<AdminPostTripEdit />} />
           </Route>
         </Routes>
       </Suspense>

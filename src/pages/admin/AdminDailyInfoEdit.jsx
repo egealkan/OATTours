@@ -450,7 +450,7 @@ const AdminDailyInfoEdit = () => {
             const { data: restaurants } = await supabase.from('restaurants').select('*');
             if (restaurants) setRestaurantsRoster(restaurants);
 
-            const { data: days } = await supabase.from('tour_days').select('*').eq('tour_id', activeTour.id).order('date', { ascending: true });
+            const { data: days } = await supabase.from('tour_days').select('*').eq('tour_id', activeTour.id).eq('is_post_trip', false).order('date', { ascending: true });
             if (days) setTourDays(days);
 
             const { data: places } = await supabase.from('daily_places').select('*');

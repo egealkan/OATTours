@@ -12,6 +12,7 @@ export default function GuestFarewellPage() {
   // Modal States
   const [isTravelerModalOpen, setIsTravelerModalOpen] = useState(false);
   const [isPlacesModalOpen, setIsPlacesModalOpen] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   useEffect(() => {
     fetchFarewellData();
@@ -50,7 +51,7 @@ export default function GuestFarewellPage() {
       }
 
       // 4. Auto-Generate Itinerary Summary (with Images)
-      const { data: days } = await supabase.from('tour_days').select('id').eq('tour_id', activeTour.id);
+      const { data: days } = await supabase.from('tour_days').select('id').eq('tour_id', activeTour.id).eq('is_post_trip', false);
       if (days && days.length > 0) {
           const dayIds = days.map(d => d.id);
           // Fetch both name and image URL
@@ -82,12 +83,12 @@ export default function GuestFarewellPage() {
 
   // Prevent background scrolling when ANY modal is open
   useEffect(() => {
-    if (isTravelerModalOpen || isPlacesModalOpen) {
+    if (isTravelerModalOpen || isPlacesModalOpen || selectedPhoto) { 
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [isTravelerModalOpen, isPlacesModalOpen]);
+  }, [isTravelerModalOpen, isPlacesModalOpen, selectedPhoto]);
 
   const formatTime = (timeString) => {
       if (!timeString) return 'TBA';
@@ -283,7 +284,13 @@ export default function GuestFarewellPage() {
                   {itinerarySummary.map((place, index) => (
                     <div key={index} className="place-card">
                       {place.image_url ? (
-                          <img src={place.image_url} alt={place.place_name} className="place-image" />
+                          <img 
+                              src={place.image_url} 
+                              alt={place.place_name} 
+                              className="place-image guide-avatar-clickable" 
+                              onClick={() => setSelectedPhoto({ url: place.image_url, caption: place.place_name })}
+                              title="Tap to enlarge"
+                          />
                       ) : (
                           <div className="place-image-placeholder">🏛️</div>
                       )}
@@ -297,6 +304,17 @@ export default function GuestFarewellPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* --- PHOTO LIGHTBOX MODAL --- */}
+      {selectedPhoto && (
+          <div className="modal-overlay" onClick={() => setSelectedPhoto(null)} style={{ zIndex: 10000 }}>
+              <div className="photo-modal-container" onClick={e => e.stopPropagation()}>
+                  <button className="photo-modal-close" onClick={() => setSelectedPhoto(null)}>&times;</button>
+                  <img src={selectedPhoto.url} alt={selectedPhoto.caption} className="photo-modal-img" />
+                  {selectedPhoto.caption && <p className="photo-modal-caption">{selectedPhoto.caption}</p>}
+              </div>
+          </div>
       )}
 
     </div>

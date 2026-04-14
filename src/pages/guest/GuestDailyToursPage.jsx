@@ -52,6 +52,7 @@ export default function GuestDailyToursPage() {
         .from('tour_days')
         .select('*')
         .eq('tour_id', activeTour.id)
+        .eq('is_post_trip', false)
         .order('date', { ascending: true });
       if (daysData) setTourDays(daysData);
 
