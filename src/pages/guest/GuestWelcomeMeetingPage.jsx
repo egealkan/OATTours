@@ -45,18 +45,22 @@ export default function GuestWelcomeMeetingPage() {
 
       const { data: days } = await supabase
         .from('tour_days')
-        .select('id, date')
+        .select('id, date, is_post_trip') // 1. Ask Supabase for the is_post_trip column
         .eq('tour_id', tour.id)
         .order('date', { ascending: true });
 
       if (days && days.length > 0) {
-        const dayIds = days.map(d => d.id);
+        // 2. Filter out post-trip days so they don't show up in the main itinerary
+        const regularDays = days.filter(d => d.is_post_trip !== true && d.is_post_trip !== 'true');
+        const dayIds = regularDays.map(d => d.id);
+
         const { data: places } = await supabase
           .from('daily_places')
           .select('tour_day_id, place_name')
           .in('tour_day_id', dayIds);
 
-        const grouped = days.map((day, index) => {
+        // 3. Map over "regularDays" instead of "days" so the Day numbering is correct
+        const grouped = regularDays.map((day, index) => {
           const dayPlaces = (places || [])
             .filter(p =>
               p.tour_day_id === day.id &&
